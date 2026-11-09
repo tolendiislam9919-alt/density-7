@@ -1,0 +1,1069 @@
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Тығыздық — 7-сынып</title>
+<style>
+:root{
+  --paper:#f3efe4; --card:#fbf9f3; --ink:#1d2430; --muted:#6a6658; --line:#d8d0bd;
+  --blue:#2d5f4f; --blue-d:#21483c; --yellow:#e0a92e; --red:#b8442f; --green:#2e7d4f; --brass:#c79a3a;
+  --frame:#6b4a2b; --board:#1d2a26;
+  --g0:#c8352b; --g1:#2e7d4f; --g2:#1f5fa8;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden;background:#2a2d31}
+body{color:var(--ink);font-family:"Segoe UI","Noto Sans",system-ui,sans-serif}
+.stage{position:absolute;left:0;top:0;width:1600px;height:900px;transform-origin:0 0;background:var(--paper);overflow:hidden;
+  background-image:linear-gradient(rgba(45,95,79,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(45,95,79,.05) 1px,transparent 1px);background-size:24px 24px}
+.top{position:absolute;left:0;right:0;top:0;height:54px;display:flex;align-items:center;gap:14px;padding:0 16px 0 22px;background:var(--blue);color:#fff}
+.top .sign{min-width:34px;height:30px;border-radius:4px;background:var(--brass);display:grid;place-items:center;font:800 13px Georgia,serif;color:#2a1f0c;padding:0 6px;box-shadow:inset 0 -3px 0 rgba(0,0,0,.2)}
+.top .lesson{font-size:13px;letter-spacing:2px;text-transform:uppercase;opacity:.85}
+.top .stitle{font-family:Georgia,"Times New Roman",serif;font-size:20px;font-weight:600;white-space:nowrap}
+.top .sep{width:1px;height:22px;background:rgba(255,255,255,.35)}
+.gchips{margin-left:auto;display:flex;gap:6px}
+.gchip{display:flex;align-items:center;gap:7px;border:none;border-radius:18px;padding:3px 4px 3px 12px;color:#fff;font:600 14px "Segoe UI";cursor:pointer;user-select:none}
+.gchip b{font:800 19px Georgia,serif;min-width:26px;text-align:center}
+.gchip .mn{width:22px;height:22px;border-radius:50%;background:rgba(0,0,0,.25);display:grid;place-items:center;font-size:15px}
+.mainw{position:absolute;left:0;right:0;top:54px;bottom:58px;display:flex}
+.leftw{position:relative;width:1040px;flex:none;transition:width .35s ease}
+.stage.wide .leftw,.stage.noboard .leftw{width:100%}
+.stage.wide .rightw,.stage.noboard .rightw{display:none}
+.slide{position:absolute;inset:0;display:none;overflow:hidden}
+.slide.on{display:block;animation:fadein .3s ease}
+.slide.nofit{padding:18px 26px 14px 30px;flex-direction:column;gap:12px}
+.slide.nofit.on{display:flex}
+.sc{position:absolute;top:13px;left:24px;width:900px;display:flex;flex-direction:column;gap:12px;transform-origin:0 0}
+.duo{display:flex;flex-direction:column;gap:12px}
+.duo>div{display:flex;flex-direction:column;gap:12px;min-width:0}
+.stage.noboard .duo{flex-direction:row;align-items:flex-start;gap:18px}
+.stage.noboard .duo>.pa{flex:1.12} .stage.noboard .duo>.pb{flex:1}
+.leftw.notrans{transition:none}
+@keyframes fadein{from{opacity:0}to{opacity:1}}
+h2.st{font-family:Georgia,"Times New Roman",serif;font-weight:700;font-size:32px;margin:0;color:var(--ink)}
+h2.st small{display:block;font:600 13px "Segoe UI",sans-serif;letter-spacing:2.2px;color:var(--blue);text-transform:uppercase;margin-bottom:3px}
+p.lead{font-size:19px;line-height:1.5;margin:0;color:#2c3340}
+.fbox{background:#fff;border:1px solid var(--line);border-left:6px solid var(--yellow);border-radius:4px;padding:10px 16px;font-family:"Cambria Math","Times New Roman",serif;font-size:20px;line-height:1.6}
+.fbox .big{font-size:28px;font-style:italic;font-weight:600}
+canvas.lab{display:block;max-width:100%;margin:0 auto;border:1px solid var(--line);border-radius:4px;background:#e9e3d3}
+.row{display:flex;gap:14px;align-items:stretch}
+.col{display:flex;flex-direction:column;gap:10px}
+.grow{flex:1;min-width:0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:5px;padding:11px 14px}
+.card h3{margin:0 0 8px;font:700 15px "Segoe UI",sans-serif;text-transform:uppercase;letter-spacing:.6px;color:var(--blue)}
+.ctl .lab{display:flex;justify-content:space-between;align-items:baseline;font-size:15px;color:var(--muted);margin-bottom:4px}
+.ctl .val{font:700 18px Georgia,serif;color:var(--ink)}
+input[type=range]{width:100%;accent-color:var(--blue);height:22px;margin:0}
+.btn{font:inherit;font-size:15px;padding:7px 14px;cursor:pointer;border-radius:4px;border:1px solid #c9c0aa;background:#fff;color:var(--ink)}
+.btn:hover{border-color:var(--blue)}
+.btn.main{background:var(--blue);border-color:var(--blue-d);color:#fff;font-weight:600}
+.btn.main:hover{background:var(--blue-d)}
+.btn.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.btn:disabled{opacity:.4;cursor:default}
+.warn{border:1px dashed var(--red);background:#fff4f2;border-radius:4px;padding:8px 13px;font-size:16px;line-height:1.45}
+.warn b{color:var(--red)}
+.tip{border:1px dashed var(--blue);background:#eef5f1;border-radius:4px;padding:8px 13px;font-size:16px;line-height:1.45}
+ul.pl{margin:0;padding-left:22px;font-size:19px;line-height:1.6}
+table.t{border-collapse:collapse;width:100%;font-size:16px;background:#fff}
+table.t th,table.t td{border:1px solid var(--line);padding:5px 9px;text-align:center}
+table.t th{background:#e4ece7;font-size:13px;text-transform:uppercase;letter-spacing:.4px;color:#2c3340}
+table.t td.l{text-align:left}
+table.t input{font:inherit;font-size:16px;width:84px;padding:3px 6px;border:1px solid #c9c0aa;border-radius:3px;text-align:center}
+sup,sub{font-size:.72em;line-height:0}
+.good{color:var(--green);font-weight:700} .bad{color:var(--red);font-weight:700}
+.chk{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-size:17px}
+.chk input{font:inherit;font-size:17px;width:90px;padding:5px 8px;border:1px solid #c9c0aa;border-radius:4px}
+
+/* таразы зертханасы */
+.wset{display:flex;flex-wrap:wrap;gap:6px}
+.wb{font:600 15px Georgia,serif;padding:7px 10px;min-width:60px;border-radius:5px;border:1px solid #a98538;background:linear-gradient(#f3dc9a,#d4ab4f);color:#3a2a08;cursor:pointer}
+.wb.mg{background:linear-gradient(#f2f2f2,#c9ccd0);border-color:#8d939a}
+.wb:disabled{opacity:.25;cursor:default}
+.objs{display:flex;flex-wrap:wrap;gap:6px}
+.status{font-size:17px;line-height:1.45;min-height:50px}
+.status b{color:var(--blue)}
+
+/* таймер */
+.timer{font:700 104px/1 Consolas,monospace;color:var(--ink);text-align:center;letter-spacing:2px}
+.timer.low{color:var(--red)}
+.rot td.cur{background:#fff3cf;font-weight:700}
+.stn{display:inline-block;padding:1px 8px;border-radius:10px;color:#fff;font-size:13px}
+
+/* топқа бөлу */
+.gdiv{display:grid;grid-template-columns:420px 1fr;gap:22px;align-items:start}
+.gcard{width:420px;height:420px;border-radius:22px;display:grid;place-items:center;text-align:center;cursor:pointer;user-select:none;touch-action:manipulation;
+  background:repeating-linear-gradient(45deg,#2d5f4f 0 22px,#346b5a 22px 44px);color:#fff;box-shadow:0 10px 24px rgba(0,0,0,.2),inset 0 0 0 8px rgba(255,255,255,.15);transition:transform .15s}
+.gcard:active{transform:scale(.98)}
+.gcard .q{font:800 120px/1 Georgia,serif}
+.gcard .tx{font:700 26px "Segoe UI";margin-top:8px}
+.gcard.res .q{font-size:46px} .gcard.res .tx{font-size:22px;opacity:.9}
+.gcols{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.gcol{background:#fff;border:1px solid var(--line);border-radius:6px;overflow:hidden;min-height:330px}
+.gcol h4{margin:0;padding:8px 10px;color:#fff;font:700 18px "Segoe UI";display:flex;justify-content:space-between}
+.gcol ol{margin:6px 0;padding-left:30px;font-size:16px;line-height:1.55}
+
+/* миға шабуыл */
+.bgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.bq{min-height:150px;border-radius:10px;background:#fff;border:2px solid var(--line);padding:12px 14px;cursor:pointer;user-select:none;display:flex;flex-direction:column;justify-content:center;transition:.2s}
+.bq .n{font:800 54px Georgia,serif;color:var(--blue);text-align:center}
+.bq .qq{display:none;font-size:18.5px;line-height:1.4;font-weight:600}
+.bq .aa{display:none;font-size:16.5px;line-height:1.35;color:var(--green);margin-top:8px;border-top:1px dashed var(--line);padding-top:6px}
+.bq.open{border-color:var(--brass);background:#fffaf0} .bq.open .n{display:none} .bq.open .qq{display:block}
+.bq.ans .aa{display:block}
+
+/* топтық тапсырма */
+.gtask{border-radius:8px;background:#fff;border:1px solid var(--line);border-top:8px solid;padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.gtask h4{margin:0;font:700 19px "Segoe UI"}
+.gtask .tx{font-size:17px;line-height:1.45;flex:1}
+.gtask .ai{display:flex;gap:6px;align-items:center;font-size:16px;flex-wrap:wrap}
+.gtask input{font:inherit;font-size:17px;width:90px;padding:4px 7px;border:1px solid #c9c0aa;border-radius:4px}
+.gtask .r{font-size:15px;min-height:22px}
+
+/* тапсырмалар */
+.who{display:flex;align-items:center;gap:8px;font-size:17px;flex-wrap:wrap}
+.who select{font:inherit;font-size:17px;padding:5px 8px;border:1px solid #c9c0aa;border-radius:4px;min-width:260px}
+.tq{background:#fff;border:1px solid var(--line);border-radius:5px;padding:8px 12px;display:grid;grid-template-columns:46px 1fr;gap:4px 10px;align-items:start}
+.tq .lv{grid-row:span 2;font:800 22px Georgia,serif;color:#fff;border-radius:5px;text-align:center;padding:6px 0}
+.tq .qt{font-size:17px;line-height:1.4}
+.tq .ans{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center}
+.ai input{font:inherit;font-size:17px;width:110px;padding:4px 7px;border:1px solid #c9c0aa;border-radius:4px}
+.ai input.okk{border-color:var(--green);background:#e8f4ec} .ai input.nok{border-color:var(--red);background:#fdecea}
+.ai{display:flex;gap:6px;align-items:center;font-size:16.5px}
+.ai .r{font-size:14px;min-width:20px}
+.lvA{background:#4f8a6e} .lvB{background:#c79a3a} .lvC{background:#b8442f}
+.score{margin-left:auto;font:700 22px Georgia,serif}
+
+/* бағалау */
+.gwrap{display:grid;grid-template-columns:1fr 330px;gap:16px;flex:1;min-height:0}
+.gtab{overflow:auto;border:1px solid var(--line);border-radius:4px;background:#fff}
+.gtab table.t{font-size:15px} .gtab th{position:sticky;top:0}
+textarea.roster{width:100%;flex:1;font:15px/1.5 "Segoe UI",sans-serif;padding:8px;border:1px solid #c9c0aa;border-radius:4px;resize:none}
+.sum{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.sum div{background:#fff;border:1px solid var(--line);border-radius:5px;padding:8px;text-align:center}
+.sum b{display:block;font:700 28px Georgia,serif}
+
+/* дуэль */
+.duel{position:absolute;inset:0;display:grid;grid-template-columns:1fr 170px 1fr;touch-action:none;user-select:none;-webkit-user-select:none}
+.side{padding:18px 22px;display:flex;flex-direction:column;gap:14px}
+.side.A{background:linear-gradient(180deg,#f6dcd8,#efc6c0)} .side.B{background:linear-gradient(180deg,#d9e6f6,#c4d7f0)}
+.side .whoq{display:flex;align-items:center;gap:12px}
+.side .whoq input{font:700 24px Georgia,serif;border:none;border-bottom:2px dashed rgba(0,0,0,.25);background:transparent;width:280px;padding:2px 4px}
+.side .sc2{margin-left:auto;font:800 58px Georgia,serif;line-height:1}
+.side.A .sc2{color:#b8442f} .side.B .sc2{color:#1f5fa8}
+.side .qq2{background:#fff;border-radius:10px;padding:16px 18px;font:700 40px/1.3 "Segoe UI",sans-serif;min-height:170px;text-align:center;display:flex;align-items:center;justify-content:center;box-shadow:0 3px 10px rgba(0,0,0,.08)}
+.side .opts{display:grid;grid-template-columns:1fr 1fr;gap:14px;flex:1;align-content:start}
+.side .o{font:700 34px Georgia,serif;padding:20px 10px;border-radius:12px;border:3px solid rgba(0,0,0,.12);background:#fff;cursor:pointer;touch-action:none;min-height:110px;-webkit-tap-highlight-color:transparent}
+.side .o.good{background:#2e7d4f;color:#fff;border-color:#1f5a38}
+.side .o.badc{background:#c8352b;color:#fff;border-color:#8e241d}
+.side .o.dim{opacity:.4}
+.side .stat{font:600 19px "Segoe UI";min-height:28px;display:flex;justify-content:space-between}
+.pbar{height:10px;background:rgba(255,255,255,.6);border-radius:5px;overflow:hidden}
+.pbar i{display:block;height:100%;width:0;transition:width .3s}
+.side.A .pbar i{background:#b8442f} .side.B .pbar i{background:#1f5fa8}
+.mid{background:var(--ink);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:10px;text-align:center}
+.mid .lbl{font-size:13px;letter-spacing:1.5px;text-transform:uppercase;opacity:.7}
+.mid .clock{font:700 30px Consolas,monospace;color:var(--yellow)}
+.mid .btn{width:140px}
+.overlay{position:absolute;inset:0;background:rgba(29,36,48,.82);display:flex;align-items:center;justify-content:center;z-index:5}
+.overlay .box{background:#fff;border-radius:12px;padding:28px 36px;text-align:center;max-width:760px}
+.overlay h3{font:700 38px Georgia,serif;margin:0 0 10px}
+.overlay p{font-size:20px;color:#444;line-height:1.5}
+
+/* ФС 3D */
+#fs3d{display:block;width:470px;height:560px;border-radius:6px;border:1px solid var(--line);cursor:grab;touch-action:none;background:#dfe6ea}
+.fsq{display:grid;grid-template-columns:auto 1fr;gap:8px 10px;align-items:center;font-size:17px}
+.fsq input{font:inherit;font-size:17px;width:100px;padding:4px 7px;border:1px solid #c9c0aa;border-radius:4px}
+
+/* бағдаршам */
+.lights{display:flex;gap:26px;justify-content:center;align-items:flex-end}
+.lt{display:flex;flex-direction:column;align-items:center;gap:8px}
+.lt .c{width:150px;height:150px;border-radius:50%;display:grid;place-items:center;font:800 54px Georgia,serif;color:#fff;cursor:pointer;box-shadow:inset 0 -10px 0 rgba(0,0,0,.15),0 6px 14px rgba(0,0,0,.15);user-select:none}
+.lt .tx{font-size:17px;text-align:center;max-width:190px;line-height:1.3}
+.lt .mn{font-size:13px;padding:2px 10px}
+.bar{display:flex;height:22px;border-radius:4px;overflow:hidden;border:1px solid var(--line);background:#fff}
+.bar i{display:block;height:100%;transition:width .3s}
+
+/* тақта */
+.rightw{flex:1;padding:14px 18px 14px 22px;display:flex;position:relative;transition:transform .3s}
+.rightw.drag{transition:none}
+.grip{position:absolute;left:0;top:50%;transform:translateY(-50%);width:26px;height:190px;border-radius:10px;background:#8a6a48;cursor:ew-resize;touch-action:none;
+  display:flex;align-items:center;justify-content:center;color:#f1e6d4;font-size:14px;font-weight:600;writing-mode:vertical-rl;letter-spacing:2px;box-shadow:0 3px 8px rgba(0,0,0,.25);z-index:3;user-select:none}
+.btab{position:absolute;right:0;top:50%;transform:translateY(-50%);width:34px;height:170px;border-radius:12px 0 0 12px;background:var(--frame);color:#f1e6d4;
+  display:none;align-items:center;justify-content:center;writing-mode:vertical-rl;font:600 15px "Segoe UI";letter-spacing:2px;cursor:pointer;z-index:6;touch-action:none;box-shadow:-3px 3px 10px rgba(0,0,0,.25)}
+.stage.noboard:not(.wide) .btab{display:flex}
+.board{flex:1;position:relative;border:10px solid var(--frame);border-radius:6px;display:flex;flex-direction:column;overflow:hidden;
+  box-shadow:inset 0 0 40px rgba(0,0,0,.55),0 10px 24px rgba(0,0,0,.25);
+  background:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px) 0 0/100% 46px,radial-gradient(ellipse at 30% 20%,#25352f 0%,var(--board) 70%)}
+.board::after{content:"";position:absolute;left:0;right:0;bottom:0;height:12px;background:linear-gradient(#5a3e24,#3f2a17);pointer-events:none}
+.tools{display:flex;align-items:center;gap:6px;padding:7px 9px;background:rgba(0,0,0,.25);border-bottom:1px solid rgba(255,255,255,.06);z-index:2;flex-wrap:wrap}
+.sw{width:25px;height:25px;border-radius:50%;border:2px solid transparent;cursor:pointer;padding:0;flex:none}
+.sw.on{border-color:#fff;box-shadow:0 0 0 2px rgba(0,0,0,.6)}
+.tb{white-space:nowrap;font:inherit;font-size:13px;background:rgba(255,255,255,.06);color:#dfe7e2;border:1px solid rgba(255,255,255,.12);border-radius:3px;padding:4px 8px;cursor:pointer;flex:none}
+.tb:hover{background:rgba(255,255,255,.14)} .tb.on{background:#e8e3cf;color:#1d2a26}
+.gapx{flex:1}
+.bhint{position:absolute;left:16px;bottom:22px;right:16px;font-family:Georgia,serif;font-style:italic;font-size:15px;color:rgba(230,240,232,.28);pointer-events:none;z-index:1}
+#ink{display:block;flex:1;min-height:0;width:100%;margin-bottom:12px;touch-action:none;cursor:crosshair;position:relative;z-index:1}
+
+.bottom{position:absolute;left:0;right:0;bottom:0;height:58px;display:flex;align-items:center;gap:8px;padding:0 20px;background:var(--ink)}
+.bottom .btn{background:transparent;color:#e8e8e8;border-color:#4b5262}
+.bottom .btn.main{background:var(--yellow);color:#1d2430;border-color:var(--yellow)}
+.dots{display:flex;gap:3px;margin:0 6px}
+.dot{width:30px;height:30px;border-radius:4px;border:1px solid #4b5262;background:transparent;color:#aab;font-size:12.5px;cursor:pointer;padding:0}
+.dot.on{background:var(--yellow);color:#1d2430;border-color:var(--yellow);font-weight:700}
+.dot.gm{border-color:var(--red)}
+.cnt{margin-left:auto;color:#cfd3dc;font:15px Georgia,serif}
+.toast{position:absolute;left:50%;top:66px;transform:translate(-50%,-10px);background:var(--ink);color:#fff;padding:10px 18px;border-radius:5px;opacity:0;transition:.25s;pointer-events:none;z-index:20;font-size:18px}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+.aop{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.aop button{font:inherit;font-size:17px;line-height:1.3;text-align:left;padding:10px 12px;border-radius:5px;border:2px solid var(--line);background:#fff;cursor:pointer;color:var(--ink)}
+.aop button b{display:inline-block;min-width:26px;font-family:Georgia,serif;color:var(--blue)}
+.aop button:disabled{opacity:.45;cursor:default}
+.aop button.ok,.aop button.no{opacity:1!important} .aop button.ok{border-color:var(--green);background:#e6f3ea} .aop button.no{border-color:var(--red);background:#f8e8e4}
+.stage.noboard .duo.astro>.pa{flex:1.6} .stage.noboard .duo.astro .sit{display:none} .stage.noboard .duo.astro .aop{grid-template-columns:1fr}
+#asMsg{font-size:18px;line-height:1.45;min-height:54px}
+
+.ptabs{display:flex;gap:8px;align-items:stretch}
+.ptab{flex:1;font:700 19px "Segoe UI";padding:8px 12px;border-radius:6px;border:3px solid;background:#fff;cursor:pointer;text-align:left;line-height:1.2}
+.ptab small{display:block;font-size:14px;font-weight:500;opacity:.9}
+.ptab.on{color:#fff!important}
+.pttmw{display:flex;align-items:center;gap:6px;background:#fff;border:1px solid var(--line);border-radius:6px;padding:4px 8px}
+.pttm{font:700 40px/1 Consolas,monospace;min-width:118px;text-align:center}
+.pttm.low{color:var(--red)}
+#ptTab td.ok{background:#e6f3ea} #ptTab td.no{background:#f8e8e4}
+#ptTab input{width:96px}
+#ptCtl{display:flex;flex-direction:column;gap:8px}
+.wb,canvas.lab{touch-action:none}
+.duo.ptd{flex-direction:row;align-items:flex-start;gap:18px} .duo.ptd>.pa{flex:1.15} .duo.ptd>.pb{flex:1}
+
+.c3d{display:block;width:640px;height:430px;border-radius:6px;border:1px solid var(--line);cursor:grab;touch-action:none;background:#1d2a26}
+.hud{display:grid;grid-template-columns:auto auto auto auto;gap:4px 14px;font-size:17px;align-items:center;background:#1e2a22;color:#e9f3ec;border-radius:6px;padding:8px 12px;font-family:"Segoe UI"}
+.hud b{font:700 20px Consolas,monospace;color:#8ff0a4} .hud .q{color:#f6d77a}
+.hud .h{font-size:12px;letter-spacing:1px;text-transform:uppercase;opacity:.7}
+.rule{border-left:6px solid var(--brass);background:#fff8e6;border-radius:4px;padding:8px 12px;font-size:17px;line-height:1.45}
+.rule .f{font:700 24px Georgia,serif;color:var(--blue)}
+
+/* §13 термодинамика */
+.stp{font-size:18px;line-height:1.5;padding:5px 0;border-bottom:1px dashed var(--line);opacity:.16;transition:opacity .45s}
+.stp.on{opacity:1}
+.stp b{font:italic 700 21px "Cambria Math","Times New Roman",serif;color:var(--blue)}
+.stp .nt{font-size:14px;color:var(--muted)}
+.stp.fin{border:0;font-size:19px}
+.stp.fin b{font-size:32px;color:var(--red)}
+.qk{background:#fff;border:1px solid var(--line);border-left:5px solid var(--blue);border-radius:5px;padding:8px 12px;font-size:17px;line-height:1.42}
+.qk.good{border-left-color:var(--green)} .qk.fail{border-left-color:var(--red)}
+.qk .qn{font:700 12px "Segoe UI",sans-serif;letter-spacing:1px;text-transform:uppercase;color:var(--blue);margin-bottom:2px}
+.qk .qa{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;margin-top:6px}
+.qk .qa input{font:inherit;font-size:17px;width:120px;padding:4px 7px;border:1px solid #c9c0aa;border-radius:4px}
+.qk .ch{font:inherit;font-size:15.5px;line-height:1.3;text-align:left;padding:6px 10px;border-radius:5px;border:2px solid var(--line);background:#fff;cursor:pointer;color:var(--ink)}
+.qk .ch:disabled{opacity:.5;cursor:default} .qk .ch.ok{border-color:var(--green);background:#e6f3ea;opacity:1} .qk .ch.no{border-color:var(--red);background:#f8e8e4}
+.qk .qr{font-size:15.5px;margin-top:4px}
+.qk .sol{display:block;color:#2c3340;background:#f2f6f3;border-radius:4px;padding:4px 8px;margin-top:4px}
+#f1Q,#f2Q{gap:8px}
+.egrid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.exm{background:#fff;border:1px solid var(--line);border-top:5px solid var(--brass);border-radius:6px;padding:10px 14px;cursor:pointer;user-select:none}
+.exm .et{font-size:18px;line-height:1.45}
+.exm .en{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:50%;background:var(--blue);color:#fff;font:700 16px Georgia,serif;margin-right:8px}
+.exm .sl{display:none;border-top:1px dashed var(--line);margin-top:8px;padding-top:8px;font:19px/1.6 "Cambria Math","Times New Roman",serif;color:#22313a}
+.exm .sl b{color:var(--red)}
+.exm.open .sl{display:block} .exm.open{border-top-color:var(--green)}
+.exm .eh{font-size:13px;color:var(--blue);margin-top:6px;letter-spacing:.5px}
+/* жақындату */
+.zov{position:absolute;inset:0;z-index:30;background:rgba(20,24,30,.8);display:none;align-items:center;justify-content:center}
+.zov.on{display:flex}
+.zwrap{transform-origin:center center;background:var(--paper);border-radius:10px;padding:14px;box-shadow:0 20px 50px rgba(0,0,0,.5)}
+.zwrap>*{margin:0!important}
+.zx{position:absolute;top:18px;right:22px;width:64px;height:64px;border-radius:50%;font:700 30px "Segoe UI",sans-serif;background:#fff;color:var(--ink);border:none;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.3)}
+.zhint{position:absolute;left:50%;bottom:18px;transform:translateX(-50%);color:#dfe3e8;font-size:16px}
+.stage.zpick .slide.on{cursor:zoom-in}
+.stage.zpick .slide.on :is(.qk,.tq,.exm,.bq,.aop,.rule,.fbox,canvas.lab,.card,.tip,.warn):hover{outline:4px solid var(--yellow);outline-offset:2px}
+.bottom #zm{font-weight:700}
+.bottom #zm.on{background:var(--yellow);color:#1d2430;border-color:var(--yellow)}
+
+
+/* изопроцестер */
+.qgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.qgrid .qk{font-size:16.5px}
+.chain{display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;background:#fff;border:1px solid var(--line);border-left:6px solid var(--brass);border-radius:4px;padding:8px 12px;min-height:52px}
+.chain .ar{color:#a7a18f;font-size:22px}
+.lk{opacity:.1;transition:opacity .45s}
+.lk.on{opacity:1}
+.chain .lk{font:italic 700 24px "Cambria Math","Times New Roman",serif;color:var(--blue)}
+.chain .lk:last-child{color:var(--red);font-size:28px}
+table.sgn td{font-size:17px;padding:9px}
+table.sgn td.sg{font:800 30px Georgia,serif;width:70px;color:var(--blue)}
+.def2{border-left:6px solid var(--blue);background:#e4ece7;border-radius:4px;padding:10px 14px;font:600 19px/1.45 Georgia,serif}
+.izg{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.izc{background:#fff;border:1px solid var(--line);border-top:7px solid;border-radius:6px;padding:10px 12px}
+.izc .ik{font:italic 700 25px "Cambria Math","Times New Roman",serif}
+.izc h4{margin:5px 0 1px;font:700 18px "Segoe UI",sans-serif}
+.izc .iw{font-size:13.5px;color:var(--muted)}
+.izc p{margin:7px 0 0;font-size:15.5px;line-height:1.4}
+table.cmp td{font-size:16px;padding:9px 7px;height:58px}
+table.cmp td.rv{cursor:pointer;user-select:none;position:relative;background:#f0ead9;color:transparent}
+table.cmp td.rv::after{content:"?";position:absolute;inset:0;display:grid;place-items:center;color:var(--blue);font:700 24px Georgia,serif}
+table.cmp td.rv b{color:transparent}
+table.cmp td.rv.op{background:#fff;color:var(--ink);cursor:default}
+table.cmp td.rv.op b{color:var(--red)}
+table.cmp td.rv.op::after{content:none}
+.sit{font-size:16.5px;line-height:1.45}
+.dchips{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}
+.dchips span{background:#efe9da;border:1px solid var(--line);border-radius:4px;padding:2px 9px;font:600 14.5px "Segoe UI",sans-serif}
+.lvp{display:flex;flex-direction:column;gap:10px}
+.sum{grid-template-columns:repeat(4,1fr)}
+.sum div{font-size:13px;padding:6px 2px}
+.side .o{font-size:27px;padding:14px 6px}
+.side .qq2{font-size:36px}
+.phchip{margin-left:auto;font:700 15px "Segoe UI";color:#1d2430;background:var(--yellow);border:none;border-radius:16px;padding:6px 14px;cursor:pointer;white-space:nowrap;max-width:520px;overflow:hidden;text-overflow:ellipsis}
+.jn{position:absolute;inset:0;display:grid;grid-template-columns:600px 1fr;gap:26px;padding:20px 30px}
+.jn h2{font:700 36px Georgia,serif;margin:0 0 6px}
+.jn .qrb{width:540px;height:540px;background:#fff;border-radius:14px;padding:12px;border:1px solid var(--line)}
+.jn .qrb svg{width:100%;height:100%;display:block}
+.qrno{height:100%;display:grid;place-items:center;text-align:center;color:var(--red);font:700 26px "Segoe UI"}
+.jnurl{font:700 19px Consolas,monospace;color:var(--blue);word-break:break-all;margin-top:8px}
+.nmg{display:flex;flex-wrap:wrap;gap:9px;align-content:flex-start;background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px;flex:1;min-height:0;overflow:auto}
+.nmc{color:#fff;font:700 21px "Segoe UI";padding:7px 15px;border-radius:20px;cursor:pointer;animation:fadein .3s}
+.phov{position:absolute;inset:0;z-index:30;background:rgba(29,36,48,.82);align-items:center;justify-content:center}
+.phbox{background:var(--card);border-radius:12px;width:1420px;height:790px;padding:18px 22px;display:grid;grid-template-columns:300px 1fr;gap:18px}
+.phbox .qrb{width:280px;height:280px;background:#fff;padding:6px;border:1px solid var(--line);border-radius:8px}
+.phbox .qrb svg{width:100%;height:100%;display:block}
+.phtb{overflow:auto;border:1px solid var(--line);border-radius:6px;background:#fff}
+.rcw{position:absolute;inset:0;display:flex;flex-direction:column;gap:10px;padding:12px 28px}
+.rctt{display:flex;gap:24px;align-items:center;justify-content:space-between}
+.rctt small{font:600 13px "Segoe UI";letter-spacing:2.2px;text-transform:uppercase;color:var(--blue)}
+.rctt h2{font:700 46px/1.1 Georgia,serif;margin:2px 0 6px}.rctt p{font-size:20px;line-height:1.4;margin:0;max-width:1120px}
+.rcqr{width:230px;height:230px;flex:none;background:#fff;padding:6px;border-radius:10px;border:1px solid var(--line)}.rcqr svg{width:100%;height:100%;display:block}
+#rcTop{flex:none;min-height:96px}
+.rcq{display:flex;align-items:center;gap:16px;min-height:90px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 16px}
+.rcn{font:800 24px Georgia,serif;color:var(--blue);flex:none}
+.rcqt{flex:1;font:700 34px/1.2 "Segoe UI",sans-serif;text-align:center}
+.rcsec{flex:none;width:76px;height:76px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font:800 34px Georgia,serif}
+.rctm{height:10px;background:#e4dcc9;border-radius:5px;overflow:hidden;margin-top:6px}.rctm i{display:block;height:100%;width:100%;background:var(--red);transition:width .2s linear}
+.rccd{font:800 76px/1 Georgia,serif;color:var(--red)}
+.rcwin{font:800 44px Georgia,serif;color:var(--ink)}
+canvas#cRace{width:100%;height:auto;border:none;border-radius:8px;background:#7fb069;flex:none}
+.rcopts{display:grid;grid-template-columns:1fr 1fr;gap:9px;flex:1;min-height:0}
+.rco{display:flex;align-items:center;gap:14px;color:#fff;border-radius:10px;padding:6px 18px;font:700 25px/1.15 "Segoe UI",sans-serif;min-height:64px}
+.rco b{font-size:30px;flex:none}.rco span{flex:1}.rco em{font:800 30px Georgia,serif;font-style:normal;flex:none}
+.rco.o0{background:#d63a35}.rco.o1{background:#1f6fc4}.rco.o2{background:#d09a12}.rco.o3{background:#2a8f4d}
+.rco.dim{opacity:.28}.rco.right{outline:5px solid #1d2430;outline-offset:-5px}
+.rcctl{display:flex;align-items:center;gap:10px;flex-wrap:wrap;flex:none}
+.rcfan{font-size:19px}.rcurl{margin-left:auto;font:700 16px Consolas,monospace;color:var(--blue)}
+.rcslots{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.rcsl{display:flex;align-items:center;justify-content:space-between;color:#fff;font:700 26px "Segoe UI";padding:12px 16px;border-radius:10px;min-height:66px}
+.rcsl.em{background:#fff;border:3px dashed;font-size:20px;justify-content:center}
+.rcsl button{background:rgba(0,0,0,.25);color:#fff;border:none;border-radius:50%;width:32px;height:32px;font-size:18px;cursor:pointer}
+.rcboard{margin-left:auto;display:flex;gap:8px}.rcb{background:#fff;border:1px solid var(--line);border-left:6px solid;border-radius:6px;padding:4px 12px;font-size:17px;display:flex;gap:10px;align-items:center}.rcb b{font:800 21px Georgia,serif}
+.rcend{display:grid;grid-template-columns:1fr 420px;gap:16px;flex:1;min-height:0}
+.rcpod{display:flex;align-items:flex-end;justify-content:center;gap:14px}
+.pd{width:270px;color:#fff;border-radius:10px 10px 0 0;text-align:center;padding:10px;font:700 24px "Segoe UI";display:flex;flex-direction:column;justify-content:center;gap:2px}
+.pd b{font:800 36px Georgia,serif}.pd small{font-size:15px;font-weight:500}.pd .pn{font-size:16px;opacity:.9}.pd.p0{min-height:230px}.pd.p1{min-height:180px}.pd.p2{min-height:145px}
+.rcfl{background:#fff;border:1px solid var(--line);border-radius:10px;padding:10px 14px;font-size:18px;line-height:1.5}.rcfl h4{margin:0 0 4px;font:700 15px "Segoe UI";text-transform:uppercase;letter-spacing:.6px;color:var(--blue)}
+
+/* §18 */
+:root{--blue:#2f6b63;--blue-d:#225049}
+.top{background:var(--blue)}
+.phchip{margin-left:auto}
+.fstop{margin-left:10px;font:700 15px "Segoe UI";background:#fff;color:var(--ink);border:none;border-radius:6px;padding:7px 16px;cursor:pointer;white-space:nowrap}
+.fstop:hover{background:#ffe9b5}
+.srt{display:grid;grid-template-columns:1fr 1fr 1fr;gap:9px}
+.sri{background:#fff;border:1px solid var(--line);border-left:6px solid var(--line);border-radius:6px;padding:9px 11px;font-size:17px;display:flex;flex-direction:column;gap:7px;justify-content:space-between;min-height:104px}
+.sri div{display:flex;gap:6px}.sri .btn{flex:1}
+.sri.ok{border-left-color:var(--green);background:#eef7f0}.sri.no{border-left-color:var(--red);background:#fbeeeb}
+.ctlg{display:flex;gap:14px;align-items:flex-end}.ctlg .ctl{flex:1;min-width:0}
+.ff{font:italic 700 18px "Cambria Math","Times New Roman",serif;color:var(--red);margin-top:4px}
+.yn{display:flex;flex-direction:column;gap:9px}
+.yni{background:#fff;border:1px solid var(--line);border-left:6px solid var(--line);border-radius:6px;padding:10px 14px;font-size:19px;line-height:1.35;display:grid;grid-template-columns:1fr auto;gap:4px 14px;align-items:center}
+.yni div{display:flex;gap:6px}.yni .btn{font-size:17px;min-width:66px}
+.yni em{grid-column:1/-1;font:600 16px "Segoe UI";color:#2c3340;font-style:normal}.yni em:empty{display:none}
+.yni.ok{border-left-color:var(--green);background:#eef7f0}.yni.no{border-left-color:var(--red);background:#fbeeeb}
+.sri .btn{padding:6px 2px;font-size:14px}
+.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.12;margin:0 .12em;font-style:inherit}
+.fr>span{padding:0 .22em;white-space:nowrap}.fr>span:first-child{border-bottom:.07em solid currentColor;padding-bottom:.04em}
+.rcqt .fr,.rco .fr{font-size:.92em}
+/* тапсырмалар үлкен әріппен */
+.qk{font-size:22px;line-height:1.38}.qgrid .qk{font-size:21px}.qk .qn{font-size:14px}
+.qk .ch{font-size:19px;padding:8px 12px}.qk .qa input{font-size:21px;width:130px}.qk .qa{font-size:21px}.qk .btn{font-size:18px}.qk .qr{font-size:18px}
+.tq .qt{font-size:22px}.ai{font-size:21px}.ai input{font-size:21px;width:120px}
+.exm .et{font-size:21px}.exm .sl{font-size:23px}
+.sri{font-size:21px;min-height:118px}.sri .btn{font-size:16px}
+.sit{font-size:19.5px}
+.cyf{background:#fff;border:1px solid var(--line);border-left:6px solid var(--brass);border-radius:4px;padding:8px 14px;display:flex;flex-direction:column;gap:6px;font-size:20px;line-height:1.35}
+.cyf b{font:italic 700 24px "Cambria Math","Times New Roman",serif;color:var(--blue)}
+.cyf .cn{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff;font:700 15px Georgia,serif;margin-right:8px}
+table.cyt td,table.cyt th{font-size:19px;padding:6px 8px}
+table.cyt th{font-size:16px;text-transform:none;letter-spacing:0}
+table.cyt input{width:86px;font-size:20px}
+table.cyt td.cr,table.cyt td.cv{color:#1f5fa8;font-weight:600}
+table.cyt td.cp b{font:700 23px Georgia,serif;color:var(--red)}
+.cyd{display:inline-block;width:16px;height:16px;border-radius:50%;margin-right:7px;vertical-align:-2px}
+.ex18{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.exr{display:flex;align-items:center;gap:7px;font-size:17px;margin-bottom:6px}
+.exr .x{min-width:76px;font-weight:600}
+.exr input{font:inherit;width:80px;padding:3px 6px;border:1px solid #c9c0aa;border-radius:4px}
+.exr input.okk{border-color:var(--green);background:#e8f4ec}.exr input.nok{border-color:var(--red);background:#fdecea}
+.exr .btn{padding:2px 9px;font-size:14px}.exr .r{font-size:14.5px}
+.rcw{gap:7px;padding:8px 22px}
+#rcTop{min-height:0}
+canvas#cRace{width:100%;height:auto}
+.rclob{display:grid;grid-template-columns:440px 1fr;gap:22px;align-items:start}
+.rclob .rcqr{width:440px;height:440px}
+.rclt small{font:600 13px "Segoe UI";letter-spacing:2.2px;text-transform:uppercase;color:var(--blue)}
+.rclt h2{font:700 44px/1.1 Georgia,serif;margin:2px 0 6px}
+.rclt p{font-size:21px;line-height:1.4;margin:0 0 8px}
+.rcwifi{background:#fff4d9;border:1px solid #e6cf8f;border-radius:8px;padding:6px 12px;font-size:20px;margin-bottom:8px}
+.rcur{display:flex;gap:14px;align-items:baseline;font:700 18px Consolas,monospace;color:var(--blue);margin-bottom:6px;flex-wrap:wrap}
+.rccn{font-size:23px;margin-bottom:6px}.rccn b{font:800 36px Georgia,serif}
+.nmg{display:flex;flex-wrap:wrap;gap:6px;align-content:flex-start}
+.nmc{font-size:18px;padding:5px 12px}
+.big2{font-size:26px!important;padding:11px 24px!important}
+.rcq{min-height:76px;padding:5px 14px}
+.rcqt{font-size:30px}
+.rcqt small{display:block;font:600 18px "Segoe UI";color:var(--green);margin-top:2px}
+.rcsec{width:62px;height:62px;font-size:28px}
+.rcac{flex:none;display:flex;flex-direction:column;align-items:center;font-size:12.5px;gap:1px}.rcac b{font:800 22px Georgia,serif}.rcac .btn{padding:2px 7px;font-size:12.5px}
+.rcnx{flex:none;font-size:25px!important;padding:12px 20px!important}
+.rcopts{grid-template-columns:repeat(4,1fr);gap:7px}
+.rco{min-height:52px;font-size:20px;padding:4px 12px;gap:8px}.rco b{font-size:23px}.rco em{font-size:25px}
+.rcwin{font-size:38px}
+.rcend{grid-template-columns:1fr 830px;height:490px}
+.pd{width:210px;font-size:20px}.pd b{font-size:30px}
+.rcall{columns:2;font-size:17px;line-height:1.55}
+.rcall div{display:flex;align-items:center;gap:6px;break-inside:avoid}.rcall i{width:12px;height:12px;border-radius:50%;flex:none}.rcall b{margin-left:auto;padding-right:14px;font-family:Georgia,serif}
+.phov .phbox{display:flex;flex-direction:column;align-items:center;width:880px;height:auto;gap:12px;position:relative}
+</style>
+</head>
+<body>
+<div class="stage" id="stage">
+  <div class="top"><span class="sign">ρ</span><span class="lesson">Физика · 7-сынып · §12</span><span class="sep"></span><span class="stitle" id="stitle"></span><button class="phchip" id="phChip">📱 QR</button><button class="fstop" id="fs">⛶ Толық экран</button></div>
+  <div class="mainw">
+    <div class="leftw" id="slides">
+
+
+<!-- 1 -->
+<section class="slide" data-title="Кіріспе" data-hint="§12. Заттың тығыздығы және тығыздықтың өлшем бірліктері. Тығыздықты есептеу">
+  <h2 class="st" style="font-size:42px;line-height:1.1;margin-top:6px"><small>7-сынып · Тығыздық · §12</small>Заттың тығыздығы және тығыздықтың өлшем бірліктері</h2>
+  <canvas class="lab" id="cTitle" width="840" height="300"></canvas>
+  <div class="row">
+    <div class="card grow"><h3>Бүгінгі сабақта</h3><div style="font-size:17px;line-height:1.45">Зат тығыздығы нені көрсететінін білесің, оны тәжірибемен анықтауды және есептеуді үйренесің. Зертханалық жұмыс №3.</div></div>
+    <div class="card grow"><h3>Сабақ соңында</h3><div style="font-size:17px;line-height:1.45">Телефонмен кіріп, <b>көлік жарысына</b> қатысасың: 10 сұрақ, әр оқушының өз көлігі бар.</div></div>
+  </div>
+  <div style="font-size:14.5px;color:var(--muted)">«Тайтөбе ауылының жалпы орта білім беретін мектебі» КММ · мұғалім Төленді И.Н.</div>
+</section>
+
+<!-- 2 -->
+<section class="slide" data-title="Тәжірибе: бірдей көлем" data-hint="Көлемдері бірдей, массалары әртүрлі. Неге?">
+  <h2 class="st" style="font-size:28px"><small>Сабақты ашамыз · тәжірибе</small>Көлемдері бірдей цилиндрлердің массасы неге әртүрлі?</h2>
+  <canvas class="lab" id="cEq" width="840" height="320"></canvas>
+  <div class="row" style="flex-wrap:wrap;gap:6px" id="eqB"><span style="align-self:center;font-size:15px;color:var(--muted)">Таразыға қою:</span><button class="btn" data-c="0">🪵 Ағаш</button><button class="btn" data-c="1">⬜ Алюминий</button><button class="btn" data-c="2">⬛ Болат</button></div>
+  <div class="row">
+    <div class="card grow" style="font-size:16.5px;line-height:1.45"><h3>Болжам айт</h3>Үш цилиндрдің де көлемі <b>20 см³</b>. Таразы әртүрлі көрсетеді. Себебі неде: пішінде ме, көлемде ме, әлде затта ма?</div>
+    <div class="card grow" style="font-size:16.5px;line-height:1.45"><h3>Оқулықтан</h3>1 кг темір кесегінің көлемі 1 кг ағаш кесегіне қарағанда әлдеқайда кіші. Массалары бірдей, бірақ әртүрлі заттан жасалған денелердің көлемдері әртүрлі.</div>
+  </div>
+</section>
+
+<!-- 3 -->
+<section class="slide" data-title="Неге тығыздықтар әртүрлі?" data-hint="Тығыздық атомдардың массасы мен орналасуына тәуелді">
+  <h2 class="st" style="font-size:28px"><small>Зат құрылысы</small>Атомдардың массасы мен орналасуы</h2>
+  <canvas class="lab" id="cAt" width="840" height="330"></canvas>
+  <div class="row" style="flex-wrap:wrap;gap:6px" id="atB"><button class="btn on" data-a="0">Алмаз мен графит</button><button class="btn" data-a="1">Сынап пен алюминий</button><button class="btn" data-a="2">Осмий мен висмут</button></div>
+  <div class="def2">Заттың атомдарының бірлік көлемдегі саны көп болса және атомдары ауыр болса, оның тығыздығы да үлкен болады.</div>
+</section>
+
+<!-- 4 -->
+<section class="slide" data-title="Тығыздықтың формуласы" data-hint="<span class=fr><span>m₁</span><span>V₁</span></span> = <span class=fr><span>m₂</span><span>V₂</span></span> = const → ρ = <span class=fr><span>m</span><span>V</span></span>">
+  <h2 class="st" style="font-size:28px"><small>Формуланы шығарамыз</small>Бір заттың массасы оның көлеміне пропорционал</h2>
+  <canvas class="lab" id="cMV" width="840" height="320"></canvas>
+  <div class="ctlg">
+    <div class="ctl"><div class="lab">Дененің көлемі <span class="val" id="mvVv"></span></div><input type="range" id="mvV" min="1" max="20" step="1" value="2"></div>
+    <div class="row" style="gap:6px;flex:none" id="mvS"><button class="btn" data-s="0">Су</button><button class="btn" data-s="1">Алюминий</button><button class="btn on" data-s="2">Темір</button></div>
+  </div>
+  <div class="row">
+    <div class="fbox grow" style="text-align:center"><span style="font-size:26px"><span class="fr"><span>m₁</span><span>V₁</span></span> = <span class="fr"><span>m₂</span><span>V₂</span></span></span> &nbsp;⟹&nbsp; <span class="big">ρ = <span class="fr"><span>m</span><span>V</span></span></span></div>
+    <div class="card grow" style="font-size:16px;line-height:1.42"><b>Тығыздық</b> – бірлік көлемдегі заттың массасын анықтайтын физикалық шама. <b>ρ</b> (ро) әрпімен белгіленеді. Скалярлық шама.</div>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="slide" data-title="Тығыздықтың өлшем бірліктері" data-hint="[ρ] = <span class=fr><span>кг</span><span>м³</span></span> · 1 <span class=fr><span>г</span><span>см³</span></span> = 1000 <span class=fr><span>кг</span><span>м³</span></span>">
+  <h2 class="st"><small>Өлшем бірлігі</small><span class="fr"><span>кг</span><span>м³</span></span> және <span class="fr"><span>г</span><span>см³</span></span>: қалай аударамыз?</h2>
+  <div class="row">
+    <div class="card grow" style="font-size:18px;line-height:1.5"><h3>ХБЖ-да</h3><span style="font:italic 700 28px 'Cambria Math',serif">[ρ] = <span class="fr"><span>кг</span><span>м³</span></span></span><br>«Алюминийдің тығыздығы 2700 <span class="fr"><span>кг</span><span>м³</span></span>» – <b>1 м³ алюминийдің массасы 2700 кг</b>.</div>
+    <div class="card grow" style="font-size:18px;line-height:1.5"><h3>Зертханада</h3><span style="font:italic 700 28px 'Cambria Math',serif">[ρ] = <span class="fr"><span>г</span><span>см³</span></span></span><br>«Судың тығыздығы 1 <span class="fr"><span>г</span><span>см³</span></span>» – <b>1 см³ судың массасы 1 г</b>.</div>
+  </div>
+  <div class="card" id="cvSteps"><h3>Мысал: темірдің тығыздығы 7800 <span class="fr"><span>кг</span><span>м³</span></span>. Оны <span class="fr"><span>г</span><span>см³</span></span>-пен өрнектейік</h3>
+    <div class="stp" data-s="1">1) Килограмды грамға: <b>7800 кг = 7 800 000 г = 7,8·10⁶ г</b></div>
+    <div class="stp" data-s="2">2) Куб метрді куб сантиметрге: <b>1 м³ = 1 000 000 см³ = 10⁶ см³</b></div>
+    <div class="stp" data-s="3">3) Бөлеміз: <b>ρ = <span class="fr"><span>7,8·10⁶ г</span><span>10⁶ см³</span></span> = 7,8 <span class="fr"><span>г</span><span>см³</span></span></b></div>
+    <div class="stp fin" data-s="4">Қорытынды: <b>1 <span class="fr"><span>г</span><span>см³</span></span> = 1000 <span class="fr"><span>кг</span><span>м³</span></span></b> <span class="nt">(<span class="fr"><span>г</span><span>см³</span></span> → <span class="fr"><span>кг</span><span>м³</span></span>: 1000-ға көбейт; <span class="fr"><span>кг</span><span>м³</span></span> → <span class="fr"><span>г</span><span>см³</span></span>: 1000-ға бөл)</span></div>
+    <button class="btn main" id="cvNext" style="margin-top:8px">💡 Келесі қадам</button></div>
+  <div class="qgrid" id="qCv"></div>
+</section>
+
+<!-- 6 -->
+<section class="slide" data-title="Тығыздық кестесі: 1 см³ заттар" data-hint="1 см³ заттың массасы – оның г/см³-пен тығыздығы">
+  <h2 class="st" style="font-size:28px"><small>Кесте</small>1 см³ әр заттың массасы қанша?</h2>
+  <canvas class="lab" id="cCube" width="840" height="300"></canvas>
+  <div class="row" style="flex-wrap:wrap;gap:6px" id="cuB"><button class="btn on" data-u="0">су</button><button class="btn" data-u="1">сынап</button><button class="btn" data-u="2">темір</button><button class="btn" data-u="3">қалайы</button><button class="btn" data-u="4">күміс</button><button class="btn" data-u="5">алтын</button><button class="btn" data-u="6">мұз</button></div>
+  <div class="tip" style="font-size:16.5px">Тығыздық заттың күйіне тәуелді: су <b>1000 кг/м³</b>, ал мұз <b>900 кг/м³</b>. Сондықтан мұз судың бетінде қалқып жүреді.</div>
+  <div class="qgrid" id="qCube"></div>
+</section>
+
+<!-- 7 -->
+<section class="slide" data-title="Зертханалық жұмыс №3: қатты дене" data-hint="m – таразыда · V = V₂ − V₁ · ρ = <span class=fr><span>m</span><span>V</span></span>">
+  <h2 class="st" style="font-size:28px"><small>Зертханалық жұмыс №3 · 1-тапсырма</small>Қатты дененің тығыздығын анықтау</h2>
+  <canvas class="lab" id="cSol" width="840" height="312"></canvas>
+  <div class="row" style="flex-wrap:wrap;gap:6px" id="soB"><button class="btn on" data-b="0">Металл цилиндр</button><button class="btn" data-b="1">Тас</button><button class="btn" data-b="2">Алюминий кесек</button><button class="btn main" id="soNx" style="margin-left:auto">▶ Келесі қадам</button><button class="btn" id="soRe">↺</button></div>
+  <div class="qgrid" id="qSol" style="grid-template-columns:1fr 1fr 1fr"></div>
+</section>
+
+<!-- 8 -->
+<section class="slide" data-title="Зертханалық жұмыс №3: сұйық" data-hint="m = m₂ − m₁ · V – мензуркадан · ρ = <span class=fr><span>m</span><span>V</span></span>">
+  <h2 class="st" style="font-size:28px"><small>Зертханалық жұмыс №3 · 2-тапсырма</small>Сұйықтың тығыздығын анықтау</h2>
+  <canvas class="lab" id="cLiq" width="840" height="320"></canvas>
+  <div class="row" style="flex-wrap:wrap;gap:6px" id="liB"><button class="btn on" data-l="0">Су</button><button class="btn" data-l="1">Күнбағыс майы</button><button class="btn" data-l="2">Сүт</button><button class="btn" data-l="3">Тұзды су</button><button class="btn main" id="liNx" style="margin-left:auto">▶ Келесі қадам</button><button class="btn" id="liRe">↺</button></div>
+  <div class="qgrid" id="qLiq"></div>
+</section>
+
+<!-- 8а: практикалық тапсырма, цилиндрлер -->
+<section class="slide" data-title="Практикалық тапсырма: цилиндрлердің тығыздығы" data-hint="V = πr²h · r = <span class=fr><span>d</span><span>2</span></span> · ρ = <span class=fr><span>m</span><span>V</span></span> · π ≈ 3,14">
+  <h2 class="st" style="font-size:28px"><small>Практикалық тапсырма · топпен</small>Алюминий, мыс, темір цилиндрлердің тығыздығын анықтаймыз</h2>
+  <div class="row" style="align-items:stretch">
+    <canvas class="lab" id="cCyl" width="460" height="360" style="flex:none;width:460px"></canvas>
+    <div class="col grow">
+      <div class="cyf">
+        <div><span class="cn">1</span>Табанының ауданы (дөңгелек): <b>S = πr²</b>, мұндағы <b>r = <span class="fr"><span>d</span><span>2</span></span></b>, π ≈ 3,14</div>
+        <div><span class="cn">2</span>Цилиндрдің көлемі: <b>V = S · h = πr²h</b></div>
+        <div><span class="cn">3</span>Диаметр арқылы: <b>V = <span class="fr"><span>πd²h</span><span>4</span></span></b></div>
+        <div><span class="cn">4</span>Тығыздығы: <b>ρ = <span class="fr"><span>m</span><span>V</span></span></b></div>
+      </div>
+      <div class="row" style="gap:6px;flex-wrap:wrap"><button class="btn main" id="cyGo">▶ Көлем қалай шығады?</button><button class="btn" id="cyRe">↺</button></div>
+      <div class="tip" style="font-size:16.5px">d – диаметр (сызғышпен не штангенциркульмен), h – биіктік, m – таразыда. Барлығын <b>см</b> және <b>г</b> арқылы жаз: көлем см³, тығыздық г/см³ болып шығады.</div>
+    </div>
+  </div>
+  <table class="t cyt" id="cyT">
+    <tr><th>Цилиндр</th><th>m, г</th><th>d, см</th><th>h, см</th><th>r, см</th><th>V, см³</th><th>ρ, г/см³</th><th>Кестеде</th><th>Ауытқу</th></tr>
+  </table>
+  <div class="row" style="gap:8px;align-items:center"><button class="btn" id="cyClr">↺ Кестені тазалау</button><span style="font-size:15px;color:var(--muted)">Өлшенген сандарды жазсаң, V мен ρ өзі есептеледі. Нәтиже осы компьютерде сақталады.</span></div>
+</section>
+
+<!-- 9 -->
+<section class="slide" data-title="Формуладан m мен V-ны табу" data-hint="ρ = <span class=fr><span>m</span><span>V</span></span> · m = ρV · V = <span class=fr><span>m</span><span>ρ</span></span> · Бірліктер бірдей болсын!">
+  <h2 class="st"><small>Тығыздықты есептеу</small>Бір формуладан үш формула</h2>
+  <div class="row" style="align-items:center">
+    <canvas class="lab" id="cTri" width="420" height="300" style="flex:none;width:420px"></canvas>
+    <div class="col grow">
+      <div class="row" style="gap:6px" id="trB"><button class="btn on" data-t="r">ρ табу</button><button class="btn" data-t="m">m табу</button><button class="btn" data-t="v">V табу</button></div>
+      <div class="fbox" id="trF" style="font-size:22px"></div>
+      <div class="tip" style="font-size:16px">Ізделетін шаманы саусақпен жап: қалған екеуі формуланы көрсетеді. Үстіңгі шама – алымы, астыңғы – бөлімі; астыңғы екеуі қатар тұрса – көбейтінді.</div>
+    </div>
+  </div>
+  <div class="egrid">
+    <div class="exm"><div class="et"><span class="en">1</span>Цилиндрдің массасы 156 г, көлемі 20 см³. Тығыздығы қандай?</div><div class="sl">ρ = <span class="fr"><span>m</span><span>V</span></span> = <span class="fr"><span>156</span><span>20</span></span> = <b>7,8 г/см³ = 7800 кг/м³</b> (болат)</div></div>
+    <div class="exm"><div class="et"><span class="en">2</span>Көлемі 0,5 м³ мұздың массасы қандай? (ρ = 900 кг/м³)</div><div class="sl">m = ρV = 900 · 0,5 = <b>450 кг</b></div></div>
+    <div class="exm"><div class="et"><span class="en">3</span>Массасы 27 г алюминий кесегінің көлемі қандай? (ρ = 2,7 г/см³)</div><div class="sl">V = <span class="fr"><span>m</span><span>ρ</span></span> = <span class="fr"><span>27</span><span>2,7</span></span> = <b>10 см³</b></div></div>
+    <div class="exm"><div class="et"><span class="en">4</span>Сынап пен алюминийдің тығыздықтарын салыстыр: 13,6 г/см³ және 2,8 г/см³.</div><div class="sl"><span class="fr"><span>13,6</span><span>2,8</span></span> ≈ <b>5 есе</b>. Себебі сынап атомы алюминий атомынан шамамен 5 есе ауыр.</div></div>
+  </div>
+</section>
+
+<!-- 10 -->
+<section class="slide" data-title="Сұрыптау: суда батады ма?" data-hint="ρ < 1000 кг/м³ → қалқиды · ρ > 1000 кг/м³ → батады">
+  <h2 class="st"><small>Бекіту · оқушы тақтаға шығады</small>Судан тығыз ба, әлде сирек пе?</h2>
+  <div class="srt" id="srt"></div>
+  <div class="fbox" id="srtR" style="font-size:20px"></div>
+</section>
+
+<!-- 11 -->
+<section class="slide" data-title="ФС: сүттің сапасы" data-hint="ρ = <span class=fr><span>m</span><span>V</span></span> · таза сиыр сүті: 1027–1033 кг/м³">
+  <h2 class="st" style="font-size:28px"><small>Функционалдық сауаттылық</small>Сүтке су қосылған ба?</h2>
+  <div class="card sit">Әжең базардан сүт сатып алды. Сатушы «таза сүт» деді. Біз <b>200 мл</b> сүтті мензуркамен өлшеп, таразыда тартқанда оның массасы <b>205 г</b> болды. Таза сиыр сүтінің тығыздығы <b>1027–1033 кг/м³</b> аралығында болады.</div>
+  <canvas class="lab" id="cMilk" width="840" height="204"></canvas>
+  <div class="qgrid" id="qMilk"></div>
+</section>
+
+<!-- 12 -->
+<section class="slide" data-title="ФС: қыста құбыр неге жарылады?" data-hint="Масса өзгермейді · V = <span class=fr><span>m</span><span>ρ</span></span> · су 1 г/см³, мұз 0,9 г/см³">
+  <h2 class="st" style="font-size:28px"><small>Функционалдық сауаттылық</small>Неге су толы бөтелке тоңазытқышта жарылады?</h2>
+  <div class="card sit">Шыны бөтелкеге <b>900 г</b> су құйылып, мұздатқышқа ұмытылып қалды. Су мұзға айналғанда массасы өзгермейді. Судың тығыздығы <b>1 г/см³</b>, мұздікі <b>0,9 г/см³</b>.</div>
+  <canvas class="lab" id="cIce" width="840" height="214"></canvas>
+  <div class="row" style="gap:8px"><button class="btn main" id="icGo">❄ Мұздату</button><button class="btn" id="icRe">↺ Басынан</button></div>
+  <div class="qgrid" id="qIce"></div>
+</section>
+
+<!-- 13 -->
+<section class="slide" data-title="ФС: алтын сақина" data-hint="V = V₂ − V₁ · ρ = <span class=fr><span>m</span><span>V</span></span> · алтын 19,3 г/см³">
+  <h2 class="st" style="font-size:28px"><small>Функционалдық сауаттылық</small>Сақина таза алтыннан жасалған ба?</h2>
+  <div class="card sit">Зергерге екі сақина әкелді, екеуінің массасы да <b>7,72 г</b>. Ол өте дәл мензуркаға 10,0 мл су құйып, сақиналарды кезекпен батырды. Таза алтынның тығыздығы <b>19,3 г/см³</b>.</div>
+  <canvas class="lab" id="cRing" width="840" height="214"></canvas>
+  <div class="row" style="gap:8px" id="riB"><button class="btn on" data-r="0">1-сақина</button><button class="btn" data-r="1">2-сақина</button></div>
+  <div class="qgrid" id="qRing"></div>
+</section>
+
+<!-- 14 -->
+<section class="slide" data-title="Деңгейлік тапсырмалар" data-hint="A – 4 балл, B – 8 балл, C – 8 балл. Барлығы 20 балл">
+  <h2 class="st"><small>Деңгейлік тапсырмалар · 20 балл</small>Жеке жұмыс</h2>
+  <div class="who">Оқушы: <select id="tkWho"></select><button class="btn" id="tkPrev">◀</button><button class="btn" id="tkNext">▶</button><span class="score" id="tkScore"></span></div>
+  <div class="row" style="gap:8px" id="lvTabs"><button class="btn on" data-v="A">A деңгей · 4 балл</button><button class="btn" data-v="B">B деңгей · 8 балл</button><button class="btn" data-v="C">C деңгей · 8 балл</button></div>
+  <div class="lvp" data-p="A">
+    <div class="tq"><div class="lv lvA">A1</div><div class="qt">Массасы 54 г, көлемі 20 см³ дененің тығыздығы қандай?</div><div class="ans"><div class="ai">ρ = <input data-q="A1"> г/см³ <span class="r"></span></div></div></div>
+    <div class="tq"><div class="lv lvA">A2</div><div class="qt">2,7 г/см³-ты кг/м³-пен өрнекте.</div><div class="ans"><div class="ai">ρ = <input data-q="A2"> кг/м³ <span class="r"></span></div></div></div>
+    <div class="tq"><div class="lv lvA">A3</div><div class="qt">Судың тығыздығы 1000 кг/м³. 1 м³ судың массасы қанша?</div><div class="ans"><div class="ai">m = <input data-q="A3"> кг <span class="r"></span></div></div></div>
+    <div class="tq"><div class="lv lvA">A4</div><div class="qt">7800 кг/м³-ты г/см³-пен өрнекте.</div><div class="ans"><div class="ai">ρ = <input data-q="A4"> г/см³ <span class="r"></span></div></div></div>
+  </div>
+  <div class="lvp" data-p="B" style="display:none">
+    <div class="tq"><div class="lv lvB">B1</div><div class="qt">Көлемі 0,002 м³ алюминий бөлшектің массасы қандай? (ρ = 2700 кг/м³, 2 балл)</div><div class="ans"><div class="ai">m = <input data-q="B1"> кг <span class="r"></span></div></div></div>
+    <div class="tq"><div class="lv lvB">B2</div><div class="qt">Массасы 390 г темір кесегінің көлемі қандай? (ρ = 7,8 г/см³, 2 балл)</div><div class="ans"><div class="ai">V = <input data-q="B2"> см³ <span class="r"></span></div></div></div>
+    <div class="tq"><div class="lv lvB">B3</div><div class="qt">Бос стақанның массасы 120 г, оған 125 мл сұйық құйғанда 220 г болды. Сұйықтың тығыздығы қандай? (2 балл)</div><div class="ans"><div class="ai">ρ = <input data-q="B3"> г/см³ <span class="r"></span></div></div></div>
+    <div class="tq"><div class="lv lvB">B4</div><div class="qt">Мензуркадағы су 50 мл еді, массасы 52 г тасты батырғанда 70 мл болды. Тастың тығыздығы қандай? (2 балл)</div><div class="ans"><div class="ai">ρ = <input data-q="B4"> г/см³ <span class="r"></span></div></div></div>
+  </div>
+  <div class="lvp" data-p="C" style="display:none">
+    <div class="tq"><div class="lv lvC">C1</div><div class="qt">Сыйымдылығы 0,5 л бөтелке бар. а) Оған толтырып құйылған судың массасы қанша? (1 г/см³) ә) Күнбағыс майын құйса ше? (0,92 г/см³, 4 балл)</div><div class="ans"><div class="ai">m су = <input data-q="C1"> г <span class="r"></span></div><div class="ai">m май = <input data-q="C2"> г <span class="r"></span></div></div></div>
+    <div class="tq"><div class="lv lvC">C2</div><div class="qt">Құрылысқа 3 м³ құм керек, құмның тығыздығы 1500 кг/м³. а) Құмның массасы қандай? ә) Жүк көтергіштігі 3 т көлік оны ең кемі неше рет тасиды? (4 балл)</div><div class="ans"><div class="ai">m = <input data-q="C3"> кг <span class="r"></span></div><div class="ai">N = <input data-q="C4"> рет <span class="r"></span></div></div></div>
+  </div>
+  <div class="tip" style="font-size:15px">Жауапты жазып, <b>Enter</b> немесе <b>✓</b> бас. Әр сұраққа 2 мүмкіндік: бірінші реттен дұрыс – толық балл, екінші реттен – жартысы. Бөлшекті үтірмен жаз: 2,6.</div>
+</section>
+
+<!-- 15 -->
+<section class="slide nofit" data-title="Бағалау парағы" data-wide="1">
+  <h2 class="st"><small>Жеке жұмыс нәтижесі</small>Кім қанша балл жинады?</h2>
+  <div class="gwrap">
+    <div class="gtab"><table class="t" id="grTab"></table></div>
+    <div class="col">
+      <div class="sum"><div style="border-top:5px solid var(--green)"><b id="g1">0</b>18–20</div><div style="border-top:5px solid var(--blue)"><b id="g2">0</b>14–17</div><div style="border-top:5px solid var(--yellow)"><b id="g3">0</b>9–13</div><div style="border-top:5px solid var(--red)"><b id="g4">0</b>0–8</div></div>
+      <div class="card col" style="flex:1;min-height:0"><h3>Сынып тізімі (әр жолға бір оқушы)</h3>
+        <textarea class="roster" id="roster" spellcheck="false"></textarea>
+        <div style="display:flex;gap:6px"><button class="btn main" id="rsSave">Тізімді сақтау</button><button class="btn" id="grClr">Нәтижелерді тазалау</button></div></div>
+      <div style="font-size:13.5px;color:var(--muted)">Баға: 18–20 балл – «5», 14–17 – «4», 9–13 – «3», 0–8 – «2».</div>
+    </div>
+  </div>
+</section>
+
+<!-- 16 -->
+<section class="slide nofit" id="slRace" data-wide="1" data-title="Көлік жарысы" data-hint="">
+  <div class="rcw"><div id="rcTop"></div><canvas class="lab" id="cRace" width="1540" height="540"></canvas><div id="rcBot"></div></div>
+</section>
+
+<!-- 17 -->
+<section class="slide" data-title="Қорытынды және үй тапсырмасы" data-hint="Бағдаршам: жасыл – түсіндім, сары – сұрағым бар, қызыл – түсінбедім">
+  <h2 class="st"><small>Қорытынды</small>Есте сақтайық</h2>
+  <div class="duo"><div class="pa">
+  <div class="row">
+    <div class="card grow"><h3>Тығыздық</h3><div style="font:28px 'Cambria Math',serif">ρ = <span class="fr"><span>m</span><span>V</span></span></div><div style="font-size:15px;color:var(--muted)">бірлік көлемдегі масса</div></div>
+    <div class="card grow"><h3>Масса · көлем</h3><div style="font:24px 'Cambria Math',serif">m = ρV &nbsp; V = <span class="fr"><span>m</span><span>ρ</span></span></div></div>
+    <div class="card grow"><h3>Бірлік</h3><div style="font:22px 'Cambria Math',serif">1 <span class="fr"><span>г</span><span>см³</span></span> = 1000 <span class="fr"><span>кг</span><span>м³</span></span></div></div>
+  </div>
+  <div class="card" style="font-size:18px;line-height:1.5"><h3>Рефлексия «Бағдаршам»</h3>🟢 Түсіндім, өзім шығара аламын · 🟡 Сұрағым бар · 🔴 Түсінбедім, көмек керек</div>
+  </div><div class="pb">
+  <div class="card"><h3>Үй тапсырмасы</h3>
+    <ol style="margin:0;padding-left:22px;font-size:18px;line-height:1.6">
+      <li>§12 оқу. ρ = <span class="fr"><span>m</span><span>V</span></span> формуласынан m мен V-ны өрнектеп жазу.</li>
+      <li><b>Есеп:</b> массасы 5,4 кг алюминий бөлшектің көлемін тап (ρ = 2700 кг/м³). Жауапты м³ және см³ арқылы жаз.</li>
+      <li><b>Функционалдық тапсырма:</b> үйдегі бір стақан судың және бір стақан күнбағыс майының массасын ас үй таразысымен өлшеп, тығыздықтарын есепте.</li>
+    </ol></div>
+</div></div>
+</section>
+
+    </div>
+    <div class="rightw" id="rightw">
+      <div class="grip" id="grip">⇢ тақтаны жылжыт</div>
+      <div class="board">
+        <div class="tools">
+          <button class="sw on" data-c="#f2efe2" style="background:#f2efe2" title="Бор"></button>
+          <button class="sw" data-c="#ffd75e" style="background:#ffd75e" title="Сары"></button>
+          <button class="sw" data-c="#ff8fa3" style="background:#ff8fa3" title="Қызғылт"></button>
+          <button class="sw" data-c="#7fd8ff" style="background:#7fd8ff" title="Көгілдір"></button>
+          <button class="sw" data-c="#9be37f" style="background:#9be37f" title="Жасыл"></button>
+          <button class="tb" data-w="2.2">жіңішке</button><button class="tb on" data-w="3.6">орташа</button><button class="tb" data-w="6.5">жуан</button>
+          <span class="gapx"></span>
+          <button class="tb" id="erase">⌫ өшір</button><button class="tb" id="undo" title="Ctrl+Z">↶</button><button class="tb" id="wipe">тазалау</button><button class="tb" id="hideB" title="Тақтаны жасыру (T)">✕</button>
+        </div>
+        <div class="bhint" id="bhint"></div>
+        <canvas id="ink"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="btab" id="btab">✎ ТАҚТА</div>
+  <div class="bottom">
+    <button class="btn" id="prev">◀ Артқа</button><div class="dots" id="dots"></div><button class="btn main" id="next">Келесі ▶</button>
+    <span class="cnt" id="cnt"></span><button class="btn" id="zm" title="Тапсырманы үлкейту (Z)">🔍 Жақындату</button><button class="btn" id="snd">🔊</button>
+  </div>
+  <div class="toast" id="toast"></div>
+  <div class="phov" id="phOv" style="display:none"><div class="phbox"><button class="zx" id="phClose" style="top:10px;right:10px;position:absolute;width:48px;height:48px;font-size:22px">✕</button><h3 style="margin:0;font:700 30px Georgia,serif">Кешіккендер: QR-ды сканерле</h3><div class="qrb" data-qr style="width:460px;height:460px"></div><div data-url style="font:700 18px Consolas,monospace;color:var(--blue)"></div><div class="nmg" id="phOvN" style="justify-content:center"></div></div></div>
+  <div class="zov" id="zov"><div class="zwrap" id="zWrap"></div><button class="zx" id="zx" title="Жабу (Esc)">✕</button><div class="zhint">Жабу: ✕, Esc немесе бос жерді басу</div></div>
+</div>
+
+<script src="qrcode.min.js"></script>
+<script src="mqtt.min.js"></script>
+<script src="net.js"></script>
+<script>
+"use strict";
+const $=id=>document.getElementById(id);
+const nf=(v,d=4)=>{ if(!isFinite(v)) return '—'; let s=String(+v.toFixed(d)); if(s.includes('e')) return s; return s.replace('.',','); };
+const g1=v=>(Math.round(v*10)/10).toFixed(1).replace('.',',');
+let toastT; function toast(m){ const t=$('toast'); t.textContent=m; t.classList.add('show'); clearTimeout(toastT); toastT=setTimeout(()=>t.classList.remove('show'),2600); }
+const store={ get(k,d){ try{ const v=localStorage.getItem(k); return v?JSON.parse(v):d; }catch(e){ return d; } }, set(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} } };
+function parseNum(s){ s=String(s).trim().replace(/\s/g,'').replace(/,/g,'.').replace(/[×x*]/g,'·').replace(/−/g,'-');
+  if(s==='') return NaN;
+  let m=/^(-?[\d.]+)·10\^?\(?(-?\d+)\)?$/.exec(s); if(m) return Number(m[1])*Math.pow(10,+m[2]);
+  m=/^10\^\(?(-?\d+)\)?$/.exec(s); if(m) return Math.pow(10,+m[1]);
+  return Number(s); }
+const near=(a,b)=>Math.abs(a-b)<=Math.max(1e-9,Math.abs(b)*1e-6);
+function shuffle(a){ a=a.slice(); for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+
+/* ---------- дыбыс ---------- */
+const SND=(()=>{ let ac=null,on=store.get('ty_snd',true);
+  function init(){ if(ac){ if(ac.state==='suspended') ac.resume(); return; } const C=window.AudioContext||window.webkitAudioContext; if(C) ac=new C(); }
+  function tone(f,d,vol=.15,at=0,type='sine'){ if(!ac||!on) return; const t=ac.currentTime+at,o=ac.createOscillator(),g=ac.createGain();
+    o.type=type; o.frequency.value=f; g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(vol,t+.01); g.gain.exponentialRampToValueAtTime(.0001,t+d); o.connect(g); g.connect(ac.destination); o.start(t); o.stop(t+d+.02); }
+  return { init, get on(){return on;}, toggle(){ on=!on; store.set('ty_snd',on); return on; },
+    ok(){ tone(660,.14); tone(990,.25,.15,.11); }, bad(){ tone(190,.3,.08,0,'square'); }, page(){ tone(520,.07,.04); },
+    clink(){ tone(2100,.08,.06); tone(2900,.06,.03,.02); }, beep(){ tone(1046,.12,.12); },
+    spin(){ tone(700+Math.random()*500,.05,.05); },
+    bell(){ [784,988,1175,1568].forEach((f,i)=>tone(f,.35,.14,i*.16)); } };
+})();
+document.addEventListener('pointerdown',()=>SND.init(),{capture:true});
+/* ---------- сурет көмекшілері ---------- */
+function rr(ctx,x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
+function label(ctx,t,x,y,col='#1d2430',size=13,align='center',bold=false,font='Segoe UI, sans-serif'){ ctx.fillStyle=col; ctx.font=(bold?'700 ':'')+size+'px '+font; ctx.textAlign=align; ctx.fillText(t,x,y); ctx.textAlign='left'; }
+function table_(ctx,w,h,y){ ctx.fillStyle='#b98a5a'; ctx.fillRect(0,y,w,h-y); ctx.fillStyle='#a3774a'; ctx.fillRect(0,y,w,6); ctx.strokeStyle='rgba(0,0,0,.08)'; for(let x=30;x<w;x+=90){ ctx.beginPath(); ctx.moveTo(x,y+10); ctx.lineTo(x+40,h); ctx.stroke(); } }
+const LABS={};
+let TT=0;
+
+/* ---------- ортақ көмекшілер ---------- */
+const grp=n=>String(Math.round(n)).replace('-','−').replace(/\B(?=(\d{3})+(?!\d))/g,' ');
+function arrow(ctx,x1,y1,x2,y2,col,w=4,hd=12){ const a=Math.atan2(y2-y1,x2-x1); ctx.strokeStyle=col; ctx.fillStyle=col; ctx.lineWidth=w;
+  ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2-Math.cos(a)*hd*.8,y2-Math.sin(a)*hd*.8); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x2,y2); ctx.lineTo(x2-Math.cos(a-.42)*hd,y2-Math.sin(a-.42)*hd); ctx.lineTo(x2-Math.cos(a+.42)*hd,y2-Math.sin(a+.42)*hd); ctx.closePath(); ctx.fill(); }
+function dim(ctx,x,y1,y2,t,col='#1d2430'){ ctx.strokeStyle=col; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(x,y1); ctx.lineTo(x,y2); ctx.stroke();
+  for(const [y,s] of [[y1,1],[y2,-1]]){ const d=Math.sign(y2-y1)*s*7; ctx.beginPath(); ctx.moveTo(x-5,y+d); ctx.lineTo(x,y); ctx.lineTo(x+5,y+d); ctx.stroke(); ctx.beginPath(); ctx.moveTo(x-9,y); ctx.lineTo(x+9,y); ctx.stroke(); }
+  label(ctx,t,x-8,(y1+y2)/2+6,col,17,'right',true,'Georgia, serif'); }
+function molMake(n){ return Array.from({length:n},()=>({u:Math.random(),v:Math.random(),a:Math.random()*6.283})); }
+function molStep(M,dt,sp){ for(const m of M){ m.a+=(Math.random()-.5)*.7; m.u+=Math.cos(m.a)*sp*dt; m.v+=Math.sin(m.a)*sp*dt;
+  if(m.u<0){ m.u=-m.u; m.a=Math.PI-m.a; } if(m.u>1){ m.u=2-m.u; m.a=Math.PI-m.a; } if(m.v<0){ m.v=-m.v; m.a=-m.a; } if(m.v>1){ m.v=2-m.v; m.a=-m.a; } } }
+function molDraw(ctx,M,x,y,w,h,col,r=3){ if(h<2*r) return; ctx.fillStyle=col; for(const m of M){ ctx.beginPath(); ctx.arc(x+r+m.u*(w-2*r),y+r+m.v*(h-2*r),r,0,7); ctx.fill(); } }
+function flame(ctx,x,y,t,s=1){ for(const [c,k] of [['#e0662f',1],['#ffcf4a',.6]]){ ctx.fillStyle=c; ctx.beginPath(); for(let i=-2;i<=2;i++){ const fx=x+i*11*s, fh=(26+8*Math.sin(t*14+i*1.7))*s*k;
+  ctx.moveTo(fx-7*s*k,y); ctx.quadraticCurveTo(fx-6*s*k,y-fh*.5,fx,y-fh); ctx.quadraticCurveTo(fx+6*s*k,y-fh*.5,fx+7*s*k,y); } ctx.fill(); } }
+function mixc(a,b,k){ return a.map((v,i)=>Math.round(v+(b[i]-v)*k)).join(','); }
+function thermo(ctx,x,y1,y2,k,txt){ k=Math.max(0,Math.min(1,k)); ctx.fillStyle='#fff'; rr(ctx,x-9,y1,18,y2-y1,9); ctx.fill(); ctx.strokeStyle='#8d939a'; ctx.lineWidth=1.5; ctx.stroke();
+  ctx.fillStyle='#c8352b'; ctx.beginPath(); ctx.arc(x,y2+8,14,0,7); ctx.fill(); ctx.fillRect(x-4,y2-(y2-y1-12)*k,8,(y2-y1-12)*k+8);
+  for(let i=0;i<=8;i++){ const y=y2-(y2-y1-12)*i/8; ctx.strokeStyle='#8d939a'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(x+9,y); ctx.lineTo(x+14,y); ctx.stroke(); }
+  if(txt) label(ctx,txt,x,y1-10,'#1d2430',15,'center',true); }
+
+/* ---------- тексерілетін сұрақ (2 мүмкіндік) ---------- */
+function mkQ(box,o,i,cb){ const d=document.createElement('div'); d.className='qk';
+  d.innerHTML=`<div class="qn">${o.n||('Сұрақ '+(i+1))}</div><div class="qt">${o.q}</div><div class="qa"></div><div class="qr"></div>`; box.appendChild(d);
+  const qa=d.querySelector('.qa'), qr=d.querySelector('.qr'); let left=2, done=false;
+  const show=o.show||(o.ch?o.ch[o.a]:nf(o.a,6)+' '+(o.unit||''));
+  function fin(ok){ done=true; d.classList.add(ok?'good':'fail'); qa.querySelectorAll('input,button').forEach(x=>x.disabled=true);
+    if(o.ch) qa.querySelectorAll('.ch').forEach((b,j)=>{ if(j===o.a) b.classList.add('ok'); });
+    qr.innerHTML=(ok?'<span class="good">✔ Дұрыс!</span>':'<span class="bad">✘ Дұрыс жауабы: '+show+'</span>')+(o.sol?'<span class="sol">'+o.sol+'</span>':''); fitSlide(slides[cur]); if(cb) cb(ok); }
+  function miss(){ left--; SND.bad(); if(left<=0) fin(false); else qr.innerHTML='<span class="bad">✘ Қате, тағы 1 мүмкіндік.</span>'+(o.hint?' <span style="color:var(--muted)">Кеңес: '+o.hint+'</span>':''); }
+  if(o.ch) o.ch.forEach((t,j)=>{ const b=document.createElement('button'); b.className='ch'; b.innerHTML=t;
+    b.onclick=()=>{ if(done) return; if(j===o.a){ SND.ok(); fin(true); } else { b.classList.add('no'); b.disabled=true; miss(); } }; qa.appendChild(b); });
+  else { qa.innerHTML=(o.pre?'<span>'+o.pre+'</span>':'')+'<input placeholder="?">'+(o.unit?'<span>'+o.unit+'</span>':'')+'<button class="btn main">Тексеру</button>';
+    const inp=qa.querySelector('input'), check=()=>{ if(done) return; const v=parseNum(inp.value); if(!isFinite(v)){ toast('Санды жаз'); return; }
+      if(Math.abs(v-o.a)<=Math.abs(o.a)*(o.tol||.01)+1e-9){ SND.ok(); fin(true); } else { miss(); inp.select(); } };
+    qa.querySelector('button').onclick=check; inp.addEventListener('keydown',e=>{ if(e.key==='Enter') check(); }); }
+  return d; }
+
+/* ---------- тығыздық: зертханалар ---------- */
+const F=(a,b)=>`<span class="fr"><span>${a}</span><span>${b}</span></span>`;
+/* канвасқа формула: бөлшектер [алымы, бөлімі] түрінде беріледі */
+function eqLine(ctx,x,y,parts,col,size,al,font){ font=font||'Georgia, serif'; const fs=size,ff=f=>(f||'')+fs+'px '+font,sm=Math.round(fs*.86); ctx.font='700 '+fs+'px '+font; const W=parts.map(p=>{ if(typeof p==='string') return ctx.measureText(p).width; ctx.font='700 '+sm+'px '+font; const w=Math.max(ctx.measureText(p[0]).width,ctx.measureText(p[1]).width)+10; ctx.font='700 '+fs+'px '+font; return w; }); const tot=W.reduce((a,b)=>a+b,0); let cx=al==='left'?x:al==='right'?x-tot:x-tot/2;
+  parts.forEach((p,i)=>{ if(typeof p==='string'){ label(ctx,p,cx,y,col,fs,'left',true,font); } else { const m=cx+W[i]/2; label(ctx,p[0],m,y-fs*.42,col,sm,'center',true,font); label(ctx,p[1],m,y+fs*.62,col,sm,'center',true,font); ctx.strokeStyle=col; ctx.lineWidth=Math.max(1.5,fs/12); ctx.beginPath(); ctx.moveTo(cx+3,y-fs*.3); ctx.lineTo(cx+W[i]-3,y-fs*.3); ctx.stroke(); } cx+=W[i]; }); }
+const fx1=(v,d=2)=>String(+(+v).toFixed(d)).replace('.',',');
+const exmBind=()=>document.querySelectorAll('.exm').forEach(e=>e.onclick=()=>{ e.classList.toggle('open'); SND.clink(); fitSlide(slides[cur]); });
+const tabs=(sel,attr,cb)=>document.querySelectorAll(sel).forEach(b=>b.onclick=()=>{ document.querySelectorAll(sel).forEach(x=>x.classList.toggle('on',x===b)); cb(b.dataset[attr]); SND.clink(); });
+/* электронды таразы */
+function scale(ctx,x,y,w,val,unit){ ctx.fillStyle='#d8dde3'; rr(ctx,x,y,w,16,6); ctx.fill(); ctx.fillStyle='#4a4f57'; rr(ctx,x+10,y+16,w-20,46,8); ctx.fill(); ctx.fillStyle='#22302a'; rr(ctx,x+w/2-70,y+24,140,30,4); ctx.fill(); label(ctx,val+' '+(unit||'г'),x+w/2,y+46,'#8ff0a4',22,'center',true,'Consolas, monospace'); }
+/* мензурка: V1..max, ішіндегі су, шкала */
+function cylinder(ctx,x,yb,H,W,max,v,col,step){ const py=q=>yb-6-q/max*H, top=py(max)-14; ctx.fillStyle='#8fa0ad'; rr(ctx,x-W/2-10,yb,W+20,8,4); ctx.fill(); ctx.fillStyle='rgba(255,255,255,.55)'; ctx.fillRect(x-W/2,top,W,yb-top);
+  const y=py(v); ctx.fillStyle=col||'rgba(78,150,222,.55)'; ctx.beginPath(); ctx.moveTo(x-W/2,y-3); ctx.quadraticCurveTo(x,y+3,x+W/2,y-3); ctx.lineTo(x+W/2,yb); ctx.lineTo(x-W/2,yb); ctx.closePath(); ctx.fill();
+  for(let q=0;q<=max;q+=step){ const p=py(q),big=q%(step*5)===0; ctx.strokeStyle='#23303a'; ctx.lineWidth=big?1.8:1; ctx.beginPath(); ctx.moveTo(x-W/2,p); ctx.lineTo(x-W/2+(big?W*.32:W*.16),p); ctx.stroke(); if(big) label(ctx,String(q),x-W/2-6,p+5,'#23303a',14,'right',true); }
+  ctx.strokeStyle='rgba(50,75,90,.9)'; ctx.lineWidth=2.4; ctx.beginPath(); ctx.moveTo(x-W/2,top); ctx.lineTo(x-W/2,yb); ctx.lineTo(x+W/2,yb); ctx.lineTo(x+W/2,top); ctx.stroke(); return py; }
+
+/* 1. Кіріспе: массасы бірдей, көлемі әртүрлі */
+const TI={t:0};
+LABS.cTitle={frame(ctx,w,h,dt){ TI.t+=dt; const t=TI.t,b=Math.sin(t*1.6)*3; ctx.fillStyle='#efe9da'; ctx.fillRect(0,0,w,h);
+  ctx.strokeStyle='#4a4f57'; ctx.lineWidth=6; ctx.beginPath(); ctx.moveTo(420,60); ctx.lineTo(420,250); ctx.stroke(); ctx.beginPath(); ctx.moveTo(180,92+b); ctx.lineTo(660,92-b); ctx.stroke(); ctx.fillStyle='#4a4f57'; ctx.beginPath(); ctx.moveTo(380,256); ctx.lineTo(460,256); ctx.lineTo(420,226); ctx.fill(); ctx.beginPath(); ctx.arc(420,92,9,0,7); ctx.fill();
+  [[180,b,'#4a4f57',52,'1 кг темір'],[660,-b,'#c9965a',150,'1 кг ағаш']].forEach(([x,o,c,s,n])=>{ ctx.strokeStyle='#6d737b'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(x,92+o); ctx.lineTo(x-80,180+o); ctx.moveTo(x,92+o); ctx.lineTo(x+80,180+o); ctx.stroke(); ctx.fillStyle='#c3c8ce'; rr(ctx,x-90,180+o,180,10,4); ctx.fill(); ctx.fillStyle=c; rr(ctx,x-s/2,180+o-s*.8,s,s*.8,4); ctx.fill(); label(ctx,n,x,215+o,'#1d2430',18,'center',true); });
+  label(ctx,'Массалары бірдей, көлемдері неге әртүрлі?',420,288,'#b8442f',20,'center',true); }};
+
+/* 2. Бірдей көлем */
+const EQ=[['Ағаш',.5,'#c9965a'],['Алюминий',2.7,'#b9bfc6'],['Болат',7.8,'#4a4f57']]; const EQS={c:-1,k:0,seen:[0,0,0]};
+tabs('#eqB [data-c]','c',v=>{ EQS.c=+v; EQS.k=0; EQS.seen[+v]=1; });
+LABS.cEq={frame(ctx,w,h,dt){ EQS.k=Math.min(1,EQS.k+dt*2.2); ctx.fillStyle='#efe9da'; ctx.fillRect(0,0,w,h); ctx.fillStyle='#b98a5a'; ctx.fillRect(0,250,w,h-250);
+  scale(ctx,470,186,260,EQS.c<0?'0':fx1(EQ[EQS.c][1]*20,1)); label(ctx,'Әр цилиндрдің көлемі V = 20 см³',600,290,'#1d2430',18,'center',true);
+  EQ.forEach(([n,r,c],i)=>{ let x=70+i*110,y=250; if(i===EQS.c){ const k=EQS.k; x=x+(600-x)*k; y=250-(250-186)*k-Math.sin(k*Math.PI)*60; } ctx.fillStyle=c; rr(ctx,x-26,y-70,52,70,6); ctx.fill(); ctx.fillStyle='rgba(255,255,255,.25)'; ctx.fillRect(x-20,y-64,10,58); if(i!==EQS.c) label(ctx,n,x,y+22,'#1d2430',15,'center',true); else if(EQS.k>=1) label(ctx,n,600,108,'#1d2430',17,'center',true); });
+  const done=EQS.seen.reduce((a,b)=>a+b,0); if(done===3){ ctx.fillStyle='#fff'; rr(ctx,20,20,330,92,8); ctx.fill(); EQ.forEach(([n,r],i)=>label(ctx,`${n}: ${fx1(r*20,1)} г → 1 см³-де ${fx1(r,1)} г`,34,46+i*26,'#1d2430',15,'left',true)); } else label(ctx,'Әр цилиндрді таразыға қойып көр',30,40,'#6a6658',17,'left',true); }};
+
+/* 3. Атомдар */
+const AT=[{a:['Алмаз',3.5,'#7a62b8',13,30,'tight'],b:['Графит',2.2,'#6d737b',13,38,'layer'],t:'Бір ғана көміртек атомы. Алмаздың атомдары жақынырақ орналасқан: көлемі графиттен шамамен 1,6 есе кіші.'},
+ {a:['Сынап',13.6,'#59616b',20,33],b:['Алюминий',2.8,'#c2c8cf',12,31],t:'Ара қашықтықтары жуық (0,3 нм мен 0,28 нм), бірақ сынап атомы алюминий атомынан 5 есе ауыр: ρ сын ≈ 5 ρ ал.'},
+ {a:['Осмий',22.6,'#3e5e86',15,27],b:['Висмут',9.79,'#b7a37a',16,40],t:'Осмий атомы висмуттан жеңілірек, бірақ атомдары бір-біріне өте жақын орналасқан: ρ о ≈ 2,3 ρ в.'}];
+const ATS={p:0}; tabs('#atB [data-a]','a',v=>ATS.p=+v);
+LABS.cAt={frame(ctx,w,h){ const P=AT[ATS.p]; ctx.fillStyle='#efe9da'; ctx.fillRect(0,0,w,h);
+  [P.a,P.b].forEach((s,k)=>{ const X=30+k*410,Y=20,W=370,H=230; ctx.fillStyle='#fff'; rr(ctx,X,Y,W,H,10); ctx.fill(); ctx.save(); rr(ctx,X,Y,W,H,10); ctx.clip(); const d=s[4],r=s[3];
+    for(let i=0;i*d<W+d;i++) for(let j=0;j*d<H+d;j++){ let x=X+20+i*d,y=Y+20+j*d; if(s[5]==='layer'){ y=Y+20+j*d*1.5; x+=(j%2)*d/2; } else if(s[5]==='tight'){ x+=(j%2)*d/2; } x+=Math.sin(TT*6+i*1.7+j)*1.2; ctx.fillStyle=s[2]; ctx.beginPath(); ctx.arc(x,y,r*(s[5]?0.62:0.75),0,7); ctx.fill(); }
+    ctx.restore(); label(ctx,s[0],X+W/2,Y+H+28,'#1d2430',21,'center',true); label(ctx,`ρ = ${fx1(s[1],2)} г/см³`,X+W/2,Y+H+54,'#b8442f',20,'center',true,'Georgia, serif'); });
+  label(ctx,`${fx1(P.a[1]/P.b[1],1)} есе тығыз`,420,284,'#1d2430',17,'center',true);
+  label(ctx,P.t,420,h-6,'#2c3340',14.5,'center'); }};
+
+/* 4. m(V) графигі */
+const MVS=[['Су',1,'#4e96de'],['Алюминий',2.7,'#9aa3ad'],['Темір',7.8,'#4a4f57']]; const MV={s:2};
+tabs('#mvS [data-s]','s',v=>MV.s=+v); $('mvV').oninput=()=>{ $('mvVv').textContent=$('mvV').value+' см³'; }; $('mvV').oninput();
+LABS.cMV={frame(ctx,w,h){ const V=+$('mvV').value,S=MVS[MV.s],m=S[1]*V; ctx.fillStyle='#efe9da'; ctx.fillRect(0,0,w,h);
+  const s=Math.cbrt(V)*30; ctx.fillStyle=S[2]; rr(ctx,150-s/2,190-s,s,s,4); ctx.fill(); label(ctx,`${V} см³`,150,214,'#1d2430',17,'center',true); scale(ctx,40,214,220,fx1(m,1));
+  eqLine(ctx,150,44,[['m','V'],' = ',[fx1(m,1),String(V)],` = ${fx1(S[1],1)} г/см³`],'#b8442f',21); label(ctx,'Көлем өзгерсе де, қатынас тұрақты',150,86,'#6a6658',14,'center',true);
+  const O=[330,290],G=[480,260],X=q=>O[0]+q/20*G[0],Y=q=>O[1]-q/160*G[1]; ctx.fillStyle='#fff'; ctx.fillRect(O[0],O[1]-G[1],G[0],G[1]); for(let q=5;q<=20;q+=5){ ctx.strokeStyle='#e4decd'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(X(q),O[1]); ctx.lineTo(X(q),O[1]-G[1]); ctx.stroke(); label(ctx,q,X(q),O[1]+16,'#6a6658',12); } for(let q=40;q<=160;q+=40){ ctx.strokeStyle='#e4decd'; ctx.beginPath(); ctx.moveTo(O[0],Y(q)); ctx.lineTo(O[0]+G[0],Y(q)); ctx.stroke(); label(ctx,q,O[0]-5,Y(q)+4,'#6a6658',12,'right'); }
+  MVS.forEach(([n,r,c],i)=>{ const on=i===MV.s,vm=Math.min(20,160/r); ctx.strokeStyle=on?c:'#cfc8b6'; ctx.lineWidth=on?4:2; ctx.beginPath(); ctx.moveTo(X(0),Y(0)); ctx.lineTo(X(vm),Y(r*vm)); ctx.stroke(); label(ctx,n,X(vm)-4,Y(r*vm)-8,on?'#1d2430':'#a7a18f',13,'right',on); });
+  ctx.fillStyle='#b8442f'; ctx.beginPath(); ctx.arc(X(V),Y(m),7,0,7); ctx.fill(); arrow(ctx,O[0],O[1],O[0],O[1]-G[1]-10,'#1d2430',2,9); arrow(ctx,O[0],O[1],O[0]+G[0]+10,O[1],'#1d2430',2,9); label(ctx,'m, г',O[0]+6,O[1]-G[1]+4,'#1d2430',13,'left',true); label(ctx,'V, см³',O[0]+G[0],O[1]+30,'#1d2430',13,'right',true); label(ctx,'Тығыздығы үлкен заттың сызығы тік',O[0]+G[0]/2,O[1]-G[1]+20,'#6a6658',13,'center'); }};
+
+/* 5. Бірліктер */
+(()=>{ let n=0; const st=[...document.querySelectorAll('#cvSteps .stp')]; $('cvNext').onclick=()=>{ if(n<st.length){ st[n].classList.add('on'); n++; SND.clink(); fitSlide(slides[cur]); } if(n>=st.length) $('cvNext').textContent='✓ Дәлелденді'; }; })();
+[{q:'2,7 '+F('г','см³')+' = ? '+F('кг','м³'),pre:'ρ = ',a:2700,unit:F('кг','м³'),show:'2700 '+F('кг','м³'),hint:'1000-ға көбейт',sol:'2,7 · 1000 = 2700 '+F('кг','м³')},
+ {q:'900 '+F('кг','м³')+' = ? '+F('г','см³')+' (мұз)',pre:'ρ = ',a:.9,unit:F('г','см³'),show:'0,9 '+F('г','см³'),hint:'1000-ға бөл',sol:F('900','1000')+' = 0,9 '+F('г','см³')}].forEach((o,i)=>mkQ($('qCv'),o,i));
+
+/* 6. 1 см³ кубтар */
+const CU=[['су',1,'#7cc2e8'],['сынап',13.6,'#a9b0b8'],['темір',7.8,'#5d5260'],['қалайы',7.3,'#c9b9a8'],['күміс',10.5,'#d7dade'],['алтын',19.3,'#e0a92e'],['мұз',.9,'#dff1fb']]; const CUS={u:0,k:1};
+tabs('#cuB [data-u]','u',v=>{ CUS.u=+v; CUS.k=0; });
+LABS.cCube={frame(ctx,w,h,dt){ CUS.k=Math.min(1,CUS.k+dt*2.5); ctx.fillStyle='#efe9da'; ctx.fillRect(0,0,w,h); const U=CU[CUS.u];
+  CU.forEach(([n,r,c],i)=>{ if(i===CUS.u) return; const x=40+i*66; ctx.fillStyle=c; rr(ctx,x,40,40,40,4); ctx.fill(); ctx.strokeStyle='rgba(0,0,0,.2)'; ctx.stroke(); label(ctx,n,x+20,100,'#1d2430',13,'center',true); });
+  const k=CUS.k,x=40+CUS.u*66+(520-40-CUS.u*66)*k,y=40+(150-40)*k-Math.sin(k*Math.PI)*40; scale(ctx,450,190,200,k>=1?fx1(U[1],1):'0'); ctx.fillStyle=U[2]; rr(ctx,x,y,40,40,4); ctx.fill(); ctx.strokeStyle='rgba(0,0,0,.25)'; ctx.stroke();
+  label(ctx,`1 см³ ${U[0]}`,550,140,'#1d2430',18,'center',true); if(k>=1){ label(ctx,`ρ = ${fx1(U[1],1)} г/см³ = ${Math.round(U[1]*1000)} кг/м³`,560,40,'#b8442f',21,'center',true,'Georgia, serif'); }
+  /* мұз суда */ const wx=700,wy=170; ctx.fillStyle='rgba(78,150,222,.45)'; ctx.fillRect(wx,wy,120,80); ctx.strokeStyle='#5d6670'; ctx.lineWidth=2; ctx.strokeRect(wx,wy-30,120,110); ctx.fillStyle='#e9f6fd'; const bob=Math.sin(TT*2)*2; ctx.fillRect(wx+40,wy-6+bob,36,36); ctx.strokeStyle='#9cc8e4'; ctx.strokeRect(wx+40,wy-6+bob,36,36); label(ctx,'мұз суда қалқиды',wx+60,wy+102,'#1d2430',13,'center',true); }};
+[{q:'1 см³ алтынның массасы қанша?',pre:'m = ',a:19.3,unit:'г',hint:'ρ = 19,3 г/см³',sol:'1 см³ алтын 19,3 г – судан 19,3 есе ауыр.'},
+ {q:'Массалары бірдей алтын мен күмістің қайсысының көлемі үлкен?',ch:['Күмістің','Алтынның','Бірдей'],a:0,sol:'V = '+F('m','ρ')+': тығыздығы аз заттың көлемі үлкен.'}].forEach((o,i)=>mkQ($('qCube'),o,i));
+
+/* 7. Зерт. №3: қатты дене */
+const SB=[['Металл цилиндр',156,20,'#4a4f57'],['Тас',52,20,'#8a7f72'],['Алюминий кесек',81,30,'#b9bfc6']]; const SO={b:0,st:0,k:0};
+const soTxt=['1-қадам: денені таразыға қой','2-қадам: мензуркадағы судың көлемі V₁','3-қадам: денені жіппен суға батыр, V₂','4-қадам: есепте'];
+tabs('#soB [data-b]','b',v=>{ SO.b=+v; SO.st=0; SO.k=0; }); $('soNx').onclick=()=>{ SO.st=(SO.st+1)%4; SO.k=0; SND.clink(); }; $('soRe').onclick=()=>{ SO.st=0; SO.k=0; };
+LABS.cSol={frame(ctx,w,h,dt){ SO.k=Math.min(1,SO.k+dt*1.4); const [n,m,V,c]=SB[SO.b],V1=60,st=SO.st,k=SO.k; ctx.fillStyle='#efe9da'; ctx.fillRect(0,0,w,h); ctx.fillStyle='#b98a5a'; ctx.fillRect(0,300,w,40);
+  label(ctx,soTxt[st],20,30,'#1d2430',19,'left',true);
+  scale(ctx,40,236,220,st>=1||(st===0&&k>=1)?fx1(m,0):'0'); const sz=18+V*.9;
+  const inW=st>=2, bodyX=inW?470:150, by=st===0?236-(1-k)*60:st===1?236:0;
+  const vv=inW?V1+V*Math.min(1,k*1.4):V1; const py=cylinder(ctx,470,300,230,100,100,vv,null,2);
+  if(!inW){ ctx.fillStyle=c; rr(ctx,bodyX-sz/2,by-sz,sz,sz,5); ctx.fill(); } else { const yb=py(0)-4-(1-k)*170; ctx.strokeStyle='#6a5a44'; ctx.lineWidth=1.2; ctx.beginPath(); ctx.moveTo(470,40); ctx.lineTo(470,yb-sz); ctx.stroke(); ctx.fillStyle=c; rr(ctx,470-sz/2,yb-sz,sz,sz,5); ctx.fill(); }
+  if(st>=1) { label(ctx,`V₁ = ${V1} мл`,610,190,'#1f5fa8',20,'left',true,'Georgia, serif'); }
+  if(st>=2&&k>=1) label(ctx,`V₂ = ${V1+V} мл`,610,150,'#1f5fa8',20,'left',true,'Georgia, serif');
+  if(st===3){ ctx.fillStyle='#fff'; rr(ctx,580,40,240,112,8); ctx.fill(); label(ctx,`m = ${m} г`,596,66,'#1d2430',17,'left',true); label(ctx,`V = ${V1+V} − ${V1} = ${V} см³`,596,92,'#1d2430',17,'left',true); eqLine(ctx,596,124,['ρ = ',[String(m),String(V)],` = ${fx1(m/V,2)} г/см³`],'#b8442f',18,'left'); }
+  label(ctx,n,150,h-14,'#1d2430',15,'center',true); }};
+[{q:'Металл цилиндр: m = 156 г, V = 20 см³. ρ = ?',pre:'ρ = ',a:7.8,unit:'г/см³',hint:'ρ = '+F('m','V'),sol:F('156','20')+' = 7,8 г/см³ = 7800 кг/м³ – кесте бойынша болат.'},
+ {q:'Алюминий кесек: зертханадан m мен V-ны оқып, ρ-ны тап.',pre:'ρ = ',a:2.7,unit:'г/см³',hint:'V = V₂ − V₁',sol:F('81','30')+' = 2,7 г/см³ – алюминий.'},
+ {q:'Тастың тығыздығын кг/м³-пен жаз.',pre:'ρ = ',a:2600,unit:'кг/м³',hint:F('52 г','20 см³')+', сосын 1000-ға көбейт',sol:'2,6 г/см³ = 2600 кг/м³ (гранит шамасында).'}].forEach((o,i)=>mkQ($('qSol'),o,i));
+
+/* 8. Зерт. №3: сұйық */
+const LQ=[['Су',1,'rgba(78,150,222,.6)'],['Күнбағыс майы',.92,'rgba(226,182,40,.75)'],['Сүт',1.03,'rgba(250,250,245,.95)'],['Тұзды су',1.1,'rgba(120,180,200,.6)']]; const LI={l:0,st:0,k:0};
+const liTxt=['1-қадам: бос стақанның массасы m₁','2-қадам: мензуркаға 50 мл сұйық құй','3-қадам: сұйықты стақанға құйып, m₂ өлше','4-қадам: есепте'];
+tabs('#liB [data-l]','l',v=>{ LI.l=+v; LI.st=0; LI.k=0; }); $('liNx').onclick=()=>{ LI.st=(LI.st+1)%4; LI.k=0; SND.clink(); }; $('liRe').onclick=()=>{ LI.st=0; LI.k=0; };
+LABS.cLiq={frame(ctx,w,h,dt){ LI.k=Math.min(1,LI.k+dt*1.2); const [n,r,c]=LQ[LI.l],st=LI.st,k=LI.k,m1=50,m2=m1+50*r; ctx.fillStyle='#efe9da'; ctx.fillRect(0,0,w,h); ctx.fillStyle='#b98a5a'; ctx.fillRect(0,290,w,30);
+  label(ctx,liTxt[st],20,30,'#1d2430',19,'left',true);
+  const inGlass=st>=2?(st===2?k:1):0, inCyl=st===0?0:st===1?k:1-inGlass;
+  scale(ctx,40,226,240,st<2?'50':st===2&&k<1?fx1(m1+50*r*k,0):fx1(m2,1));
+  /* стақан */ const gx=160,gb=226; ctx.fillStyle='rgba(255,255,255,.6)'; ctx.fillRect(gx-40,gb-90,80,90); if(inGlass>0){ ctx.fillStyle=c; ctx.fillRect(gx-40,gb-60*inGlass,80,60*inGlass); } ctx.strokeStyle='#5d6670'; ctx.lineWidth=2.4; ctx.beginPath(); ctx.moveTo(gx-40,gb-90); ctx.lineTo(gx-40,gb); ctx.lineTo(gx+40,gb); ctx.lineTo(gx+40,gb-90); ctx.stroke();
+  cylinder(ctx,450,290,220,90,100,50*inCyl,c,2); if(st===1&&k>=1) label(ctx,'V = 50 мл',560,150,'#1f5fa8',22,'left',true,'Georgia, serif');
+  if(st===3){ ctx.fillStyle='#fff'; rr(ctx,560,40,260,128,8); ctx.fill(); label(ctx,`m₁ = ${m1} г, m₂ = ${fx1(m2,1)} г`,576,66,'#1d2430',17,'left',true); label(ctx,`m = m₂ − m₁ = ${fx1(m2-m1,1)} г`,576,94,'#1d2430',17,'left',true); eqLine(ctx,576,130,['ρ = ',[fx1(m2-m1,1),'50'],` = ${fx1(r,2)} г/см³`],'#b8442f',18,'left'); }
+  label(ctx,n,gx,gb+50,'#1d2430',16,'center',true); }};
+[{q:'Күнбағыс майы: m₁ = 50 г, m₂ = 96 г, V = 50 мл. ρ = ?',pre:'ρ = ',a:.92,unit:'г/см³',hint:'m = m₂ − m₁',sol:F('96 − 50','50')+' = '+F('46','50')+' = 0,92 г/см³'},
+ {q:'Тұзды суды зертханада өлшеп, тығыздығын кг/м³-пен жаз.',pre:'ρ = ',a:1100,unit:'кг/м³',hint:'m₂ − m₁ = 55 г',sol:F('55','50')+' = 1,1 г/см³ = 1100 кг/м³'}].forEach((o,i)=>mkQ($('qLiq'),o,i));
+
+/* 8а. Практикалық тапсырма: цилиндрдің көлемі мен тығыздығы */
+const CYM=[['Алюминий',2.7,'#b9bfc6'],['Мыс',8.9,'#c8773e'],['Темір',7.8,'#5d6670']];
+const CY={t:-1,k:0};
+(()=>{ const T=$('cyT'), sv=store.get('ty_cyl',{}), r2=v=>isFinite(v)?String(+v.toFixed(2)).replace('.',','):'';
+  CYM.forEach(([n,rt],i)=>{ const tr=document.createElement('tr'); const v=sv[i]||{};
+    tr.innerHTML=`<td class="l"><span class="cyd" style="background:${CYM[i][2]}"></span><b>${n}</b></td>`+['m','d','h'].map(k=>`<td><input data-k="${k}" inputmode="decimal" value="${v[k]||''}"></td>`).join('')+'<td class="cr"></td><td class="cv"></td><td class="cp"></td><td>'+String(rt).replace('.',',')+'</td><td class="ce"></td>';
+    const calc=()=>{ const g=k=>parseNum(tr.querySelector(`[data-k="${k}"]`).value), m=g('m'),d=g('d'),h=g('h'), r=d/2, V=3.14*r*r*h, p=m/V;
+      tr.querySelector('.cr').textContent=d>0?r2(r):''; tr.querySelector('.cv').textContent=d>0&&h>0?r2(V):''; const ok=m>0&&d>0&&h>0;
+      tr.querySelector('.cp').innerHTML=ok?`<b>${r2(p)}</b>`:''; const e=ok?Math.abs(p-rt)/rt*100:NaN; tr.querySelector('.ce').innerHTML=ok?`<span class="${e<=10?'good':'bad'}">${r2(e)} %</span>`:'';
+      sv[i]={m:tr.querySelector('[data-k=m]').value,d:tr.querySelector('[data-k=d]').value,h:tr.querySelector('[data-k=h]').value}; store.set('ty_cyl',sv); };
+    tr.querySelectorAll('input').forEach(x=>x.addEventListener('input',calc)); T.appendChild(tr); calc(); });
+  $('cyClr').onclick=()=>{ if(!confirm('Кестедегі өлшемдер өшеді. Жалғастырамыз ба?')) return; T.querySelectorAll('input').forEach(x=>{ x.value=''; x.dispatchEvent(new Event('input')); }); };
+  $('cyGo').onclick=()=>{ CY.t=0; SND.beep(); }; $('cyRe').onclick=()=>{ CY.t=-1; }; })();
+LABS.cCyl={frame(ctx,w,h,dt){ if(CY.t>=0) CY.t+=dt; const t=CY.t, X=150, R=78, ry=24, B=300, H=200, top=B-H;
+  ctx.fillStyle='#efe9da'; ctx.fillRect(0,0,w,h);
+  /* қанша қабат көрсетіледі: 0..1 */ const k=t<0?1:Math.min(1,Math.max(0,(t-1.2)/3)), showS=t<0||t>0.2, yT=B-H*k;
+  /* цилиндр денесі */ const g=ctx.createLinearGradient(X-R,0,X+R,0); g.addColorStop(0,'#8f969d'); g.addColorStop(.45,'#e3e7ea'); g.addColorStop(1,'#7d848b'); ctx.fillStyle=g; ctx.fillRect(X-R,yT,2*R,B-yT);
+  ctx.beginPath(); ctx.ellipse(X,B,R,ry,0,0,Math.PI); ctx.fill();
+  if(t>=0&&k<1){ ctx.strokeStyle='rgba(255,255,255,.55)'; ctx.lineWidth=1; for(let y=B-12;y>yT;y-=12){ ctx.beginPath(); ctx.ellipse(X,y,R,ry,0,0,Math.PI); ctx.stroke(); } }
+  ctx.fillStyle=showS?'rgba(224,169,46,.85)':'#c9ced3'; ctx.beginPath(); ctx.ellipse(X,yT,R,ry,0,0,7); ctx.fill(); ctx.strokeStyle='#5d6670'; ctx.lineWidth=2; ctx.stroke();
+  ctx.strokeStyle='#5d6670'; ctx.beginPath(); ctx.moveTo(X-R,yT); ctx.lineTo(X-R,B); ctx.moveTo(X+R,yT); ctx.lineTo(X+R,B); ctx.stroke(); ctx.beginPath(); ctx.ellipse(X,B,R,ry,0,0,Math.PI); ctx.stroke(); ctx.setLineDash([5,4]); ctx.beginPath(); ctx.ellipse(X,B,R,ry,0,Math.PI,2*Math.PI); ctx.stroke(); ctx.setLineDash([]);
+  /* диаметр мен радиус */ ctx.strokeStyle='#b8442f'; ctx.lineWidth=2.5; ctx.beginPath(); ctx.moveTo(X-R,yT); ctx.lineTo(X+R,yT); ctx.stroke(); ctx.fillStyle='#1d2430'; ctx.beginPath(); ctx.arc(X,yT,4,0,7); ctx.fill();
+  label(ctx,'d',X-R/2,yT-8,'#b8442f',22,'center',true,'Georgia, serif'); label(ctx,'r',X+R/2,yT-8,'#1f5fa8',22,'center',true,'Georgia, serif'); ctx.strokeStyle='#1f5fa8'; ctx.lineWidth=3; ctx.beginPath(); ctx.moveTo(X,yT); ctx.lineTo(X+R,yT); ctx.stroke();
+  if(showS) label(ctx,'S = πr²',X,yT+ry+30,'#5a3d00',20,'center',true,'Georgia, serif');
+  /* биіктік */ ctx.strokeStyle='#2e7d4f'; ctx.lineWidth=2; const hx=X+R+30; ctx.beginPath(); ctx.moveTo(hx,yT); ctx.lineTo(hx,B); ctx.stroke(); [yT,B].forEach(y=>{ ctx.beginPath(); ctx.moveTo(hx-7,y); ctx.lineTo(hx+7,y); ctx.stroke(); }); label(ctx,'h',hx+14,(yT+B)/2+7,'#2e7d4f',22,'left',true,'Georgia, serif');
+  /* түсіндірме */ const msg=t<0?'Табан ауданын биіктікке көбейтеміз':t<1.2?'Табаны – дөңгелек, ауданы S = πr²':k<1?'Дөңгелектерді h биіктікке дейін қабаттаймыз':'V = S · h = πr²h';
+  label(ctx,msg,w/2,h-14,'#1d2430',15,'center',true); label(ctx,'π ≈ 3,14',w-14,26,'#6a6658',16,'right',true); }};
+
+/* 9. Үшбұрыш */
+const TRF={r:'ρ = '+F('m','V'),m:'m = ρ · V',v:'V = '+F('m','ρ')}; const TR={t:'r'};
+const trUi=()=>{ $('trF').innerHTML=`<span class="big">${TRF[TR.t]}</span>`; }; tabs('#trB [data-t]','t',v=>{ TR.t=v; trUi(); }); trUi();
+LABS.cTri={frame(ctx,w,h){ ctx.fillStyle='#efe9da'; ctx.fillRect(0,0,w,h); const A=[210,24],B=[30,280],C=[390,280]; ctx.fillStyle='#fff'; ctx.beginPath(); ctx.moveTo(...A); ctx.lineTo(...B); ctx.lineTo(...C); ctx.closePath(); ctx.fill(); ctx.strokeStyle='#1d2430'; ctx.lineWidth=3; ctx.stroke(); ctx.beginPath(); ctx.moveTo(100,170); ctx.lineTo(320,170); ctx.moveTo(210,170); ctx.lineTo(210,280); ctx.stroke();
+  const P={m:[210,140],r:[140,245],v:[280,245]}; Object.entries(P).forEach(([k,p])=>{ const cov=k===TR.t||(k==='r'&&TR.t==='r'); const hid=k===TR.t; if(hid){ ctx.fillStyle='#e0a92e'; ctx.beginPath(); ctx.arc(p[0],p[1]-12,34,0,7); ctx.fill(); label(ctx,'?',p[0],p[1],'#1d2430',38,'center',true,'Georgia, serif'); } else label(ctx,k==='r'?'ρ':k==='m'?'m':'V',p[0],p[1],'#1d2430',44,'center',true,'Georgia, serif'); });
+  label(ctx,TR.t==='m'?'×':'',210,250,'#b8442f',30,'center',true); }};
+
+/* 10. Сұрыптау */
+const SRT=[['Қарағай ағашы, 500 кг/м³',0],['Мұз, 900 кг/м³',0],['Болат, 7800 кг/м³',1],['Тығын (пробка), 240 кг/м³',0],['Алюминий, 2700 кг/м³',1],['Кірпіш, 1800 кг/м³',1],['Парафин, 900 кг/м³',0],['Шыны, 2500 кг/м³',1],['Күнбағыс майы, 920 кг/м³',0]];
+const SNM=['Судан сирек (қалқиды)','Судан тығыз (батады)'];
+(()=>{ const box=$('srt'); let done=0,right=0; const res=()=>{ $('srtR').innerHTML=done<SRT.length?`Дұрыс: <b>${right}</b> · қалды: <b>${SRT.length-done}</b> · судың тығыздығы 1000 кг/м³`:`Дұрыс: <b>${right} / ${SRT.length}</b>. Тығыздығы судан аз зат судың бетінде қалады.`; };
+  SRT.forEach(([n,a])=>{ const d=document.createElement('div'); d.className='sri'; d.innerHTML=`<span>${n}</span><div>${SNM.map(s=>`<button class="btn">${s}</button>`).join('')}</div>`; const bs=d.querySelectorAll('button');
+    bs.forEach((b,j)=>b.onclick=()=>{ bs.forEach(x=>x.disabled=true); done++; if(j===a){ right++; SND.ok(); d.classList.add('ok'); } else { SND.bad(); d.classList.add('no'); } d.querySelector('span').innerHTML=`${n} <b>– ${a?'батады':'қалқиды'}</b>`; res(); }); box.appendChild(d); }); res(); })();
+
+/* 11. ФС: сүт */
+LABS.cMilk={frame(ctx,w,h){ ctx.fillStyle='#efe9da'; ctx.fillRect(0,0,w,h); ctx.fillStyle='#b98a5a'; ctx.fillRect(0,196,w,24); cylinder(ctx,120,196,160,80,250,200,'rgba(250,250,245,.97)',10); label(ctx,'200 мл',200,60,'#1d2430',18,'left',true);
+  scale(ctx,270,134,220,'205'); label(ctx,'сүттің өзі',380,120,'#6a6658',14,'center',true);
+  const O=560,W=250,Y=80,X=v=>O+(v-1000)/50*W; ctx.fillStyle='#fff'; rr(ctx,O-10,Y-50,W+30,120,8); ctx.fill(); ctx.fillStyle='#d8efdf'; ctx.fillRect(X(1027),Y,X(1033)-X(1027),26); ctx.fillStyle='#e4decd'; ctx.fillRect(O,Y+12,W,3);
+  [1000,1010,1020,1030,1040,1050].forEach(v=>{ label(ctx,v,X(v),Y+48,'#6a6658',12); ctx.fillStyle='#8d939a'; ctx.fillRect(X(v)-1,Y+6,2,14); }); label(ctx,'таза сүт',X(1030),Y-6,'#2e7d4f',14,'center',true); label(ctx,'су',X(1000),Y-6,'#1f5fa8',14,'center',true); label(ctx,'Тығыздық, кг/м³',O+W/2,Y-30,'#1d2430',15,'center',true); }};
+[{q:'Сүттің тығыздығы г/см³-пен қандай?',pre:'ρ = ',a:1.025,unit:'г/см³',hint:'ρ = '+F('m','V')+' = '+F('205','200'),sol:F('205','200')+' = 1,025 г/см³'},
+ {q:'Оны кг/м³-пен жаз.',pre:'ρ = ',a:1025,unit:'кг/м³',hint:'1000-ға көбейт',sol:'1,025 · 1000 = 1025 кг/м³'},
+ {q:'Сүт таза ма?',ch:['Жоқ: 1025 < 1027, су қосылған болуы мүмкін','Иә, таза сүт','Сүттің тығыздығын анықтау мүмкін емес'],a:0,sol:'Судың тығыздығы 1000 кг/м³: су қосса, сүттің тығыздығы кемиді.'},
+ {q:'1 л таза сүттің (1,03 г/см³) массасы қанша?',pre:'m = ',a:1030,unit:'г',hint:'1 л = 1000 см³, m = ρV',sol:'m = 1,03 · 1000 = 1030 г'}].forEach((o,i)=>mkQ($('qMilk'),o,i));
+
+/* 12. ФС: мұз */
+const IC={on:false,k:0}; $('icGo').onclick=()=>{ IC.on=true; IC.k=0; SND.beep(); }; $('icRe').onclick=()=>{ IC.on=false; IC.k=0; };
+LABS.cIce={frame(ctx,w,h,dt){ if(IC.on) IC.k=Math.min(1,IC.k+dt/3); const k=IC.k,V=900+100*k,crack=k>=.85; ctx.fillStyle='#dcecf5'; ctx.fillRect(0,0,w,h); ctx.fillStyle='#eef6fb'; rr(ctx,40,20,300,190,10); ctx.fill(); ctx.strokeStyle='#9cc8e4'; ctx.lineWidth=3; ctx.stroke(); label(ctx,'мұздатқыш',190,44,'#5d7f99',15,'center',true);
+  const bx=150,bb=196,bw=70,bh=120; ctx.fillStyle=`rgba(${mixc([120,180,235],[230,245,252],k)},.9)`; const lv=bh*(.78+.22*k); ctx.fillRect(bx,bb-lv,bw,lv); ctx.strokeStyle='#5d6670'; ctx.lineWidth=3; ctx.beginPath(); ctx.moveTo(bx+20,bb-bh-30); ctx.lineTo(bx+20,bb-bh); ctx.lineTo(bx,bb-bh+20); ctx.lineTo(bx,bb); ctx.lineTo(bx+bw,bb); ctx.lineTo(bx+bw,bb-bh+20); ctx.lineTo(bx+bw-20,bb-bh); ctx.lineTo(bx+bw-20,bb-bh-30); ctx.stroke();
+  if(crack){ ctx.strokeStyle='#b8442f'; ctx.lineWidth=2.5; ctx.beginPath(); ctx.moveTo(bx+bw,bb-80); ctx.lineTo(bx+bw-14,bb-60); ctx.lineTo(bx+bw-4,bb-46); ctx.lineTo(bx+bw-18,bb-26); ctx.stroke(); label(ctx,'жарылды!',bx+bw+12,bb-56,'#b8442f',16,'left',true); }
+  label(ctx,k<1?(IC.on?'Су қатып жатыр…':'Су, 900 г'):'Мұз, 900 г',bx+bw/2,bb+20,'#1d2430',15,'center',true);
+  label(ctx,'m = 900 г (өзгермейді)',400,60,'#1d2430',19,'left',true); label(ctx,`V = ${Math.round(V)} см³`,400,104,'#1f5fa8',30,'left',true,'Georgia, serif'); if(k<1) label(ctx,'ρ: 1 г/см³ → 0,9 г/см³',400,142,'#6a6658',18,'left'); else eqLine(ctx,400,142,['V = ',['m','ρ'],' = ',['900','0,9']],'#6a6658',18,'left'); if(k>=1) label(ctx,'+100 см³: шыныға орын жоқ',400,176,'#b8442f',18,'left',true); }};
+[{q:'Мұздың массасы қандай?',pre:'m = ',a:900,unit:'г',hint:'Зат күйі өзгергенде масса өзгермейді',sol:'m = 900 г'},
+ {q:'Мұздың көлемі қандай?',pre:'V = ',a:1000,unit:'см³',hint:'V = '+F('m','ρ')+' = '+F('900','0,9'),sol:'V = '+F('900','0,9')+' = 1000 см³'},
+ {q:'Көлем қаншаға артты?',pre:'ΔV = ',a:100,unit:'см³',hint:'Судың көлемі 900 см³',sol:'1000 − 900 = 100 см³'},
+ {q:'Қыста су құбырын қалай сақтайды?',ch:['Жылытады немесе судан босатады','Құбырға көбірек су құяды','Ештеңе істемейді'],a:0,sol:'Су қатса, көлемі шамамен 11 %-ға артып, құбырды жарады.'}].forEach((o,i)=>mkQ($('qIce'),o,i));
+
+/* 13. ФС: сақина */
+const RI={r:0}; tabs('#riB [data-r]','r',v=>RI.r=+v);
+LABS.cRing={frame(ctx,w,h){ const V=[.4,.6][RI.r]; ctx.fillStyle='#efe9da'; ctx.fillRect(0,0,w,h); ctx.fillStyle='#b98a5a'; ctx.fillRect(0,206,w,24);
+  scale(ctx,30,142,220,'7,72'); ctx.strokeStyle='#e0a92e'; ctx.lineWidth=7; ctx.beginPath(); ctx.ellipse(140,128,26,9,0,0,7); ctx.stroke();
+  const x=400,yb=206,H=160,W=60,py=q=>yb-6-(q-9)/2*H; ctx.fillStyle='rgba(255,255,255,.55)'; ctx.fillRect(x-W/2,24,W,yb-24); const y=py(10+V); ctx.fillStyle='rgba(78,150,222,.55)'; ctx.fillRect(x-W/2,y,W,yb-y);
+  for(let q=0;q<=20;q++){ const v=9+q/10,p=py(v),big=q%5===0; ctx.strokeStyle='#23303a'; ctx.lineWidth=big?1.8:1; ctx.beginPath(); ctx.moveTo(x-W/2,p); ctx.lineTo(x-W/2+(big?22:12),p); ctx.stroke(); if(big) label(ctx,fx1(v,1),x-W/2-6,p+5,'#23303a',13,'right',true); }
+  ctx.strokeStyle='#5d6670'; ctx.lineWidth=2.4; ctx.strokeRect(x-W/2,24,W,yb-24); ctx.strokeStyle='#e0a92e'; ctx.lineWidth=4; ctx.beginPath(); ctx.ellipse(x,yb-14,14,5,0,0,7); ctx.stroke(); ctx.setLineDash([4,4]); ctx.strokeStyle='#8d939a'; ctx.beginPath(); ctx.moveTo(x+W/2,py(10)); ctx.lineTo(x+70,py(10)); ctx.stroke(); ctx.setLineDash([]);
+  label(ctx,'V₁ = 10,0 мл',x+76,py(10)+5,'#6a6658',15,'left'); label(ctx,`V₂ = ${fx1(10+V,1)} мл`,x+76,y+5,'#1f5fa8',17,'left',true);
+  label(ctx,`${RI.r+1}-сақина`,690,70,'#1d2430',22,'center',true); label(ctx,'Тығыздықты өзің есепте',690,104,'#6a6658',16,'center'); }};
+[{q:'1-сақинаның көлемі қандай?',pre:'V = ',a:.4,unit:'см³',hint:'V₂ − V₁',sol:'10,4 − 10,0 = 0,4 см³'},
+ {q:'1-сақинаның тығыздығы қандай?',pre:'ρ = ',a:19.3,unit:'г/см³',hint:F('7,72','0,4'),sol:'ρ = '+F('7,72','0,4')+' = 19,3 г/см³ – таза алтын.'},
+ {q:'2-сақинаның тығыздығы қандай?',pre:'ρ = ',a:12.87,unit:'г/см³',tol:.02,hint:'V = 0,6 см³',sol:'ρ = '+F('7,72','0,6')+' ≈ 12,9 г/см³ – алтыннан әлдеқайда аз.'},
+ {q:'2-сақина туралы қорытынды:',ch:['Таза алтын емес: оған жеңіл металл қосылған','Таза алтын','Сақинаның массасы қате'],a:0,sol:'Массалары бірдей, бірақ көлемі үлкен: тығыздығы аз.'}].forEach((o,i)=>mkQ($('qRing'),o,i));
+
+document.querySelectorAll('#lvTabs [data-v]').forEach(b=>b.onclick=()=>{ document.querySelectorAll('#lvTabs [data-v]').forEach(x=>x.classList.toggle('on',x===b)); document.querySelectorAll('.lvp').forEach(p=>p.style.display=p.dataset.p===b.dataset.v?'':'none'); fitSlide(slides[cur]); });
+exmBind();
+/* ---------- жақындату: алыстағы партаға тапсырманы үлкейтіп көрсету ---------- */
+const ZSEL='.qk,.tq,.exm,.bq,.aop,.rule,.fbox,canvas.lab,.card,.tip,.warn';
+const ZM={pick:false,el:null,ph:null};
+function zoomPick(on){ ZM.pick=on; $('stage').classList.toggle('zpick',on); $('zm').classList.toggle('on',on); if(on) toast('Үлкейтетін тапсырманы немесе суретті басыңыз'); }
+function zoomClose(){ if(ZM.el){ ZM.ph.replaceWith(ZM.el); ZM.el=null; ZM.ph=null; } $('zov').classList.remove('on'); }
+function zoomOpen(el){ zoomClose(); const w=el.offsetWidth, h=el.offsetHeight, ph=document.createElement('div'); ph.style.cssText=`width:${w}px;height:${h}px;flex:none`;
+  el.replaceWith(ph); ZM.el=el; ZM.ph=ph; const wr=$('zWrap'); wr.style.width=(w+28)+'px'; wr.appendChild(el);
+  $('zov').classList.add('on'); zoomFit(); zoomPick(false); SND.page(); }
+function zoomFit(){ const wr=$('zWrap'); if(!ZM.el) return; const s=Math.max(1,Math.min(1480/wr.offsetWidth,790/wr.offsetHeight,2.8)); wr.style.transform=`scale(${s})`; }
+if(window.ResizeObserver) new ResizeObserver(zoomFit).observe($('zWrap'));
+function zoomTarget(e){ if(!ZM.pick||e.target.closest('#zm,.bottom,.rightw')) return null; const el=e.target.closest(ZSEL); return el&&slides[cur].contains(el)?el:null; }
+document.addEventListener('pointerdown',e=>{ if(zoomTarget(e)){ e.stopPropagation(); e.preventDefault(); } },true);
+document.addEventListener('click',e=>{ const el=zoomTarget(e); if(el){ e.stopPropagation(); e.preventDefault(); zoomOpen(el); } },true);
+$('zm').onclick=()=>{ if(ZM.el){ zoomClose(); return; } zoomPick(!ZM.pick); };
+$('zx').onclick=zoomClose; $('zov').addEventListener('click',e=>{ if(e.target===$('zov')) zoomClose(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ zoomClose(); zoomPick(false); return; }
+  if(/INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName)) return; if('zZяЯ'.includes(e.key)) $('zm').onclick(); });
+
+/* 16–17. Жеке жұмыс және бағалау */
+const TQ={A1:[2.7,1],A2:[2700,1],A3:[1000,1],A4:[7.8,1],B1:[5.4,2],B2:[50,2],B3:[0.8,2],B4:[2.6,2],C1:[500,2],C2:[460,2],C3:[4500,2],C4:[2,2]};
+const MAXP=20;
+let ROSTER=store.get('ty_roster',store.get('ty_roster',null)); if(!ROSTER){ ROSTER=[]; for(let i=1;i<=20;i++) ROSTER.push(i+'-оқушы'); }
+let RES=store.get('ty_res',{}), who=0;
+const pts=n=>Object.values(RES[n]||{}).reduce((a,r)=>a+(r.p||0),0);
+const mark=p=>p>=18?5:p>=14?4:p>=9?3:2;
+function tkFill(){ const sel=$('tkWho'); sel.innerHTML=ROSTER.map((n,i)=>`<option value="${i}">${i+1}. ${n}</option>`).join(''); if(who>=ROSTER.length) who=0; sel.value=who; tkLoad(); }
+function tkLoad(){ const r=RES[ROSTER[who]]||{};
+  document.querySelectorAll('[data-q]').forEach(inp=>{ const q=inp.dataset.q, s=r[q], out=inp.parentElement.querySelector('.r');
+    inp.value=s?s.v:''; inp.className=s&&s.done?(s.p>0?'okk':'nok'):''; inp.disabled=!!(s&&s.done);
+    out.innerHTML=!s?'':s.done?(s.p>0?`<span class="good">✔ +${nf(s.p,1)}</span>`:`<span class="bad">✘ ${nf(TQ[q][0],5)}</span>`):'<span class="bad">✘ тағы 1 мүмкіндік</span>'; });
+  $('tkScore').textContent=nf(pts(ROSTER[who]),1)+' / '+MAXP+' балл'; }
+function tkCheck(inp){ const q=inp.dataset.q, n=ROSTER[who]; if(!n) return; const v=parseNum(inp.value); if(!isFinite(v)){ toast('Санды жаз'); return; }
+  const r=RES[n]=RES[n]||{}; const s=r[q]=r[q]||{t:0,p:0,v:'',done:false}; if(s.done) return;
+  s.t++; s.v=inp.value; if(near(v,TQ[q][0])){ s.p=s.t===1?TQ[q][1]:TQ[q][1]/2; s.done=true; SND.ok(); } else { SND.bad(); if(s.t>=2){ s.done=true; s.p=0; } }
+  store.set('ty_res',RES); tkLoad(); grBuild(); }
+document.querySelectorAll('[data-q]').forEach(inp=>{ inp.addEventListener('keydown',e=>{ if(e.key==='Enter'){ tkCheck(inp); e.preventDefault(); } });
+  const b=document.createElement('button'); b.className='btn'; b.style.cssText='padding:3px 9px;font-size:14px'; b.textContent='✓'; b.title='Тексеру'; b.onclick=()=>tkCheck(inp); inp.after(b); });
+$('tkWho').onchange=()=>{ who=+$('tkWho').value; tkLoad(); };
+$('tkPrev').onclick=()=>{ who=(who-1+ROSTER.length)%ROSTER.length; $('tkWho').value=who; tkLoad(); };
+$('tkNext').onclick=()=>{ who=(who+1)%ROSTER.length; $('tkWho').value=who; tkLoad(); };
+function grBuild(){ let h='<tr><th>№</th><th>Аты-жөні</th><th>A (4)</th><th>B (8)</th><th>C (8)</th><th>Барлығы</th><th>Баға</th></tr>', c=[0,0,0,0];
+  ROSTER.forEach((n,i)=>{ const r=RES[n]||{}, sum=k=>Object.entries(r).filter(([q])=>q[0]===k).reduce((a,[,s])=>a+(s.p||0),0), p=pts(n), any=Object.keys(r).length;
+    if(any) c[5-mark(p)]++;
+    h+=`<tr><td>${i+1}</td><td class="l">${n}</td><td>${any?nf(sum('A'),1):''}</td><td>${any?nf(sum('B'),1):''}</td><td>${any?nf(sum('C'),1):''}</td><td><b>${any?nf(p,1):''}</b></td><td><b>${any?'«'+mark(p)+'»':''}</b></td></tr>`; });
+  $('grTab').innerHTML=h; $('g1').textContent=c[0]; $('g2').textContent=c[1]; $('g3').textContent=c[2]; $('g4').textContent=c[3]; }
+$('roster').value=ROSTER.join('\n');
+$('rsSave').onclick=()=>{ const l=$('roster').value.split('\n').map(s=>s.trim()).filter(Boolean); if(!l.length){ toast('Тізім бос'); return; } ROSTER=l; store.set('ty_roster',ROSTER); tkFill(); grBuild(); toast('Тізім сақталды: '+l.length+' оқушы'); };
+$('grClr').onclick=()=>{ if(!confirm('Барлық оқушының нәтижесі өшеді. Жалғастырамыз ба?')) return; RES={}; store.set('ty_res',RES); tkLoad(); grBuild(); };
+tkFill(); grBuild();
+/* ---------- тақта ---------- */
+const board=(()=>{ const cv=$('ink'), ctx=cv.getContext('2d'); let ink=store.get('ty_ink',{}), color='#f2efe2', width=3.6, eraser=false, curS=null, saveT;
+  const list=()=> (ink[cur]=ink[cur]||[]);
+  function resize(){ const r=cv.getBoundingClientRect(); if(!r.width) return; const k=window.devicePixelRatio||1; cv.width=Math.round(r.width*k); cv.height=Math.round(r.height*k); redraw(); }
+  function seg(s,i){ const W=cv.width,H=cv.height,p=s.p,base=s.w*W/600; ctx.globalCompositeOperation=s.e?'destination-out':'source-over'; ctx.strokeStyle=s.c; ctx.lineCap='round'; ctx.lineJoin='round';
+    if(i===0){ ctx.lineWidth=base*(.6+p[0][2]*.8); ctx.beginPath(); ctx.moveTo(p[0][0]*W,p[0][1]*H); ctx.lineTo(p[0][0]*W+.1,p[0][1]*H); ctx.stroke(); return; }
+    const a=p[i-1],b=p[i],z=p[i-2]||a; ctx.lineWidth=base*(.6+b[2]*.8); ctx.beginPath(); ctx.moveTo((z[0]+a[0])/2*W,(z[1]+a[1])/2*H); ctx.quadraticCurveTo(a[0]*W,a[1]*H,(a[0]+b[0])/2*W,(a[1]+b[1])/2*H); ctx.stroke(); }
+  function redraw(){ ctx.globalCompositeOperation='source-over'; ctx.clearRect(0,0,cv.width,cv.height); for(const s of list()) for(let i=0;i<s.p.length;i++) seg(s,i); ctx.globalCompositeOperation='source-over'; }
+  function save(){ clearTimeout(saveT); saveT=setTimeout(()=>store.set('ty_ink',ink),400); }
+  function pt(e){ const r=cv.getBoundingClientRect(); return [(e.clientX-r.left)/r.width,(e.clientY-r.top)/r.height,e.pointerType==='pen'?(e.pressure||.5):.5]; }
+  cv.addEventListener('pointerdown',e=>{ if(e.button>0&&e.pointerType==='mouse') return; cv.setPointerCapture(e.pointerId); curS={c:color,w:eraser?width*5:width,e:eraser,p:[pt(e)]}; list().push(curS); seg(curS,0); e.preventDefault(); });
+  cv.addEventListener('pointermove',e=>{ if(!curS) return; const evs=e.getCoalescedEvents?e.getCoalescedEvents():[e]; for(const ev of evs){ curS.p.push(pt(ev)); seg(curS,curS.p.length-1); } });
+  const end=()=>{ if(curS){ curS=null; ctx.globalCompositeOperation='source-over'; save(); } };
+  cv.addEventListener('pointerup',end); cv.addEventListener('pointercancel',end); cv.addEventListener('lostpointercapture',end);
+  document.querySelectorAll('.sw').forEach(b=>b.onclick=()=>{ color=b.dataset.c; eraser=false; $('erase').classList.remove('on'); document.querySelectorAll('.sw').forEach(x=>x.classList.toggle('on',x===b)); });
+  document.querySelectorAll('[data-w]').forEach(b=>b.onclick=()=>{ width=+b.dataset.w; document.querySelectorAll('[data-w]').forEach(x=>x.classList.toggle('on',x===b)); });
+  $('erase').onclick=()=>{ eraser=!eraser; $('erase').classList.toggle('on',eraser); };
+  function undo(){ list().pop(); redraw(); save(); } $('undo').onclick=undo;
+  $('wipe').onclick=()=>{ if(!list().length) return; ink[cur]=[]; redraw(); save(); toast('Осы беттегі жазба тазаланды'); };
+  return {resize,redraw,undo}; })();
+
+/* ---------- слайдты сыйғызу (тақта ашық/жабық) ---------- */
+const slides=[...document.querySelectorAll('.slide')]; let cur=0;
+slides.forEach(s=>{ if(s.classList.contains('nofit')) return; const sc=document.createElement('div'); sc.className='sc'; while(s.firstChild) sc.appendChild(s.firstChild); s.appendChild(sc); });
+function fitSlide(s){ if(!s||s.classList.contains('nofit')) return; const sc=s.querySelector('.sc'), L=$('slides');
+  const AW=L.clientWidth-48, AH=L.clientHeight-26; if(AW<=0) return; let best={k:0,w:900};
+  sc.style.transform='none';
+  for(let w=880; w<=Math.max(880,Math.min(1500,AW)); w+=40){ sc.style.width=w+'px'; const h=sc.offsetHeight; const k=Math.min(AW/w,AH/h,1.75); if(k>best.k+.004) best={k,w}; }
+  sc.style.width=best.w+'px'; sc.style.left=(24+(AW-best.w*best.k)/2)+'px'; sc.style.transform=`scale(${best.k})`; }
+let NB=store.get('ty_noboard',false);
+function setBoard(hidden){ NB=hidden; store.set('ty_noboard',NB); $('stage').classList.toggle('noboard',NB); $('rightw').style.transform=''; fitSlide(slides[cur]); setTimeout(()=>{ fitSlide(slides[cur]); board.resize(); },380); }
+$('hideB').onclick=()=>setBoard(true);
+(()=>{ // тақтаны қолмен оңға ысыру → жасырылады; оң жақтағы «ТАҚТА» белгісін басу → қайта шығады
+  const g=$('grip'), rw=$('rightw'); let x0=null;
+  const k=()=>$('stage').getBoundingClientRect().width/1600;
+  g.addEventListener('pointerdown',e=>{ x0=e.clientX; g.setPointerCapture(e.pointerId); rw.classList.add('drag'); e.preventDefault(); });
+  g.addEventListener('pointermove',e=>{ if(x0===null) return; const dx=Math.max(0,(e.clientX-x0)/k()); rw.style.transform=`translateX(${dx}px)`; });
+  const up=e=>{ if(x0===null) return; const dx=(e.clientX-x0)/k(); x0=null; rw.classList.remove('drag'); if(dx>110) setBoard(true); else rw.style.transform=''; };
+  g.addEventListener('pointerup',up); g.addEventListener('pointercancel',up);
+  $('btab').addEventListener('pointerdown',e=>{ e.preventDefault(); setBoard(false); });
+})();
+
+/* ---------- навигация ---------- */
+slides.forEach((s,i)=>{ const b=document.createElement('button'); b.className='dot'+(s.dataset.wide?' gm':''); b.textContent=i+1; b.title=s.dataset.title; b.onclick=()=>go(i); $('dots').appendChild(b); });
+function go(i){ zoomClose(); zoomPick(false); i=Math.max(0,Math.min(slides.length-1,i)); if(i!==cur) SND.page(); slides[cur].classList.remove('on'); cur=i; const s=slides[cur]; s.classList.add('on');
+  $('stitle').textContent=s.dataset.title; $('bhint').innerHTML=s.dataset.hint||''; $('stage').classList.toggle('wide',!!s.dataset.wide);
+  [...$('dots').children].forEach((d,j)=>d.classList.toggle('on',j===cur)); $('cnt').textContent=(cur+1)+' / '+slides.length;
+  $('prev').disabled=cur===0; $('next').disabled=cur===slides.length-1; store.set('ty_slide',cur); fitSlide(s); requestAnimationFrame(()=>{ board.resize(); fitSlide(s); }); }
+$('prev').onclick=()=>go(cur-1); $('next').onclick=()=>go(cur+1);
+document.addEventListener('keydown',e=>{ const typing=/INPUT|SELECT|TEXTAREA/.test(document.activeElement.tagName);
+  if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='z'&&!typing){ board.undo(); e.preventDefault(); return; } if(typing) return;
+  if(['ArrowRight','PageDown'].includes(e.key)){ go(cur+1); e.preventDefault(); } else if(['ArrowLeft','PageUp'].includes(e.key)){ go(cur-1); e.preventDefault(); }
+  else if('fFаА'.includes(e.key)) toggleFS(); else if('tTеЕ'.includes(e.key)) setBoard(!NB); });
+document.addEventListener('fullscreenchange',()=>{ $('fs').textContent=document.fullscreenElement?'✕ Толық экраннан шығу':'⛶ Толық экран'; });
+function toggleFS(){ try{ if(!document.fullscreenElement) document.documentElement.requestFullscreen(); else document.exitFullscreen(); }catch(e){} }
+$('fs').onclick=toggleFS; $('snd').onclick=()=>{ $('snd').textContent=SND.toggle()?'🔊':'🔇'; }; $('snd').textContent=SND.on?'🔊':'🔇';
+function fit(){ const s=Math.min(innerWidth/1600,innerHeight/900); $('stage').style.transform=`translate(${(innerWidth-1600*s)/2}px,${(innerHeight-900*s)/2}px) scale(${s})`; board.resize(); }
+addEventListener('resize',fit); $('slides').classList.add('notrans'); $('stage').classList.toggle('noboard',NB); fit(); setTimeout(()=>$('slides').classList.remove('notrans'),200);
+$('slides').addEventListener('transitionend',e=>{ if(e.target===$('slides')){ fitSlide(slides[cur]); board.resize(); } });
+const hashN=/^#(\d+)$/.exec(location.hash); go(hashN?(+hashN[1]-1):Math.min(store.get('ty_slide',0),slides.length-1));
+addEventListener('hashchange',()=>{ const m=/^#(\d+)$/.exec(location.hash); if(m) go(+m[1]-1); });
+if(document.fonts&&document.fonts.ready) document.fonts.ready.then(()=>fitSlide(slides[cur]));
+let prevT=performance.now();
+(function loop(now){ const dt=Math.min(.05,Math.max(0,(now-prevT)/1000)); prevT=now; TT+=dt;
+  [...slides[cur].querySelectorAll('canvas.lab'),...$('zWrap').querySelectorAll('canvas.lab')].forEach(cv=>{ const L=LABS[cv.id]; if(L) L.frame(cv.getContext('2d'),cv.width,cv.height,dt); });
+  requestAnimationFrame(loop); })(prevT);
+</script>
+<script src="phone_panel.js"></script>
+</body>
+</html>
